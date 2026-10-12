@@ -33,3 +33,12 @@
 - Repeated starts retain an existing message when it has at least as much text and tool data, while completion replaces the whole message view.
 - Missing prerequisite messages for delta/tool events throw, allowing the caller to recover from a fresh snapshot as specified.
 - No unresolved concerns.
+
+## Fix round 1 (base `1b3a892`)
+
+- Added regression coverage for a repeated start whose incoming view has shorter text but more tools, and for `tool.completed` arriving without a matching `tool.started` entry.
+- RED: `pnpm test -- apps/web/test/chat-reducer.test.ts` failed exactly those two cases: expected existing streamed text `streamed answer` but received `x`; expected missing tool completion to throw but it did not. The remaining 7 tests passed.
+- GREEN: `pnpm test -- apps/web/test/chat-reducer.test.ts` passed: 2 test files, 9 tests.
+- Typecheck: `pnpm typecheck` passed for web, server, contracts, and agent.
+- Changed repeated `message.started` to retain any existing view for that message ID. Split tool event handling so `tool.started` may insert/update, while `tool.completed` requires an existing tool ID and throws `Missing tool <id> for completion` otherwise.
+- Self-review: successful tool completion still replaces the existing result, independent tool IDs remain covered, and terminal handling still retains completed messages/tools. No unresolved concerns.

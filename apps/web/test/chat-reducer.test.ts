@@ -37,6 +37,26 @@ test('a repeated message.started preserves fuller text already shown', () => {
   expect(next.messages[0]).toEqual(fuller);
 });
 
+test('a repeated start never replaces streamed text with shorter text due to extra tools', () => {
+  const snapshot = createSnapshot();
+  const fuller: MessageView = {
+    id: 'm', role: 'assistant', text: 'streamed answer', state: 'streaming',
+    tools: [{ id: 'finished-tool', name: 'todo_create', state: 'completed', input: {}, output: { id: 't' }, error: null }],
+  };
+  const restarted: MessageView = {
+    id: 'm', role: 'assistant', text: 'x', state: 'streaming', tools: [
+      fuller.tools[0],
+      { id: 'new-tool-1', name: 'todo_list', state: 'running', input: {}, output: null, error: null },
+      { id: 'new-tool-2', name: 'todo_update', state: 'running', input: {}, output: null, error: null },
+    ],
+  };
+  const next = reduceChat({ ...snapshot, messages: [fuller], lastEventId: 1 }, event(snapshot, 2, {
+    type: 'message.started', message: restarted,
+  }));
+
+  expect(next.messages[0]).toEqual(fuller);
+});
+
 test('message.completed replaces the full message after deltas', () => {
   const snapshot = createSnapshot();
   const withDelta = reduceChat(snapshot, event(snapshot, 1, { type: 'message.delta', messageId: 'm', delta: 'partial' }));
@@ -55,6 +75,14 @@ test('tool results update by ID while separate tool calls remain independent', (
   next = reduceChat(next, event(snapshot, 3, { type: 'tool.completed', messageId: 'm', tool: done }));
 
   expect(next.messages[0].tools).toEqual([done, second]);
+});
+
+test('tool.completed requires its started tool to exist in the snapshot', () => {
+  const snapshot = createSnapshot();
+  const completed: ToolView = { id: 'missing', name: 'todo_create', state: 'completed', input: {}, output: {}, error: null };
+
+  expect(() => reduceChat(snapshot, event(snapshot, 1, { type: 'tool.completed', messageId: 'm', tool: completed })))
+    .toThrow('Missing tool missing for completion');
 });
 
 test('todos.changed replaces the todo list', () => {

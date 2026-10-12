@@ -11,13 +11,7 @@ export function reduceChat(snapshot: ChatSnapshot, event: CrewEvent): ChatSnapsh
   const upsertMessage = (message: MessageView, preserveExisting: boolean) => {
     const index = next.messages.findIndex(item => item.id === message.id);
     if (index < 0) next.messages.push(structuredClone(message));
-    else {
-      const existing = next.messages[index];
-      const existingIsFuller = existing.text.length >= message.text.length
-        && existing.tools.length >= message.tools.length
-        && (existing.state !== 'streaming' || message.state === 'streaming');
-      if (!preserveExisting || !existingIsFuller) next.messages[index] = structuredClone(message);
-    }
+    else if (!preserveExisting) next.messages[index] = structuredClone(message);
   };
 
   switch (data.type) {
@@ -33,13 +27,20 @@ export function reduceChat(snapshot: ChatSnapshot, event: CrewEvent): ChatSnapsh
       message.text += data.delta;
       break;
     }
-    case 'tool.started':
-    case 'tool.completed': {
+    case 'tool.started': {
       const message = next.messages.find(item => item.id === data.messageId);
       if (!message) throw new Error(`Missing message ${data.messageId} for tool event`);
       const toolIndex = message.tools.findIndex(tool => tool.id === data.tool.id);
       if (toolIndex < 0) message.tools.push(structuredClone(data.tool));
       else message.tools[toolIndex] = structuredClone(data.tool);
+      break;
+    }
+    case 'tool.completed': {
+      const message = next.messages.find(item => item.id === data.messageId);
+      if (!message) throw new Error(`Missing message ${data.messageId} for tool event`);
+      const toolIndex = message.tools.findIndex(tool => tool.id === data.tool.id);
+      if (toolIndex < 0) throw new Error(`Missing tool ${data.tool.id} for completion`);
+      message.tools[toolIndex] = structuredClone(data.tool);
       break;
     }
     case 'todos.changed':
