@@ -3,10 +3,16 @@ import type { FastifyInstance } from 'fastify';
 import type { Models } from '@earendil-works/pi-ai';
 import { createStorage } from './storage/index.js';
 import type { Storage } from './storage/index.js';
+import { builtinModels } from '@earendil-works/pi-ai/providers/all';
+import { SqliteCredentialStore } from './storage/credential-store.js';
+import { createCatalog, type CatalogService } from './providers/catalog.js';
+import { registerProviderRoutes } from './providers/routes.js';
 import { AppError } from './lib/error.js';
 declare module 'fastify' {
   interface FastifyInstance {
     storage: Storage;
+    catalog: CatalogService;
+    models: Models;
   }
 }
 export interface AppOptions {
@@ -15,15 +21,24 @@ export interface AppOptions {
 }
 export async function createApp(options: AppOptions): Promise<FastifyInstance> {
   const app = Fastify({
-    logger: false
+    logger: false,
+    ajv: {customOptions: {removeAdditional: false}}
   });
   const storage = createStorage(options.dataDir);
   app.decorate('storage', storage);
+  const credentials = new SqliteCredentialStore(storage);
+  const models = options.models ?? builtinModels({credentials, authContext:{env:async () => undefined,fileExists:async () => false}});
+  const catalog = createCatalog(models, credentials, id => storage.runs.unfinished().some(run => storage.runs.details(run.id).providerId === id));
+  app.decorate('models', models);
+  app.decorate('catalog', catalog);
+  registerProviderRoutes(app, catalog);
   app.addHook('onClose', () => {
     if (storage.database.isOpen)
       storage.close();
   });
   app.setErrorHandler((error, _request, reply) => {
+    if (error && typeof error === 'object' && 'validation' in error)
+      return reply.code(400).send({error:{code:'invalid_input', message:'Invalid input'}});
     if (error instanceof AppError)
       return reply.code(error.statusCode).send({
         error: {

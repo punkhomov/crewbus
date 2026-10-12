@@ -69,3 +69,6 @@ export interface UpdateTodoInput {
   title?: string;
   completed?: boolean;
 }
+
+export interface ProviderView { id: string; name: string; configured: boolean }
+export interface ModelView { id: string; name: string; providerId: string; contextWindow: number }
