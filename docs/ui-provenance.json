@@ -1,0 +1,313 @@
+{
+  "licenses": {
+    "ai-elements": {
+      "path": "vendor/ui/ai-elements/LICENSE",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/LICENSE",
+      "sha256": "b4f9adb7c568904834d0dd6cc98d16c390d21ca32fc17ae7a267715269bd5529"
+    },
+    "shadcn": {
+      "path": "vendor/ui/shadcn/LICENSE.md",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/LICENSE.md",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+    }
+  },
+  "files": [
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/conversation.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/conversation.tsx",
+      "working": "apps/web/src/components/ai-elements/conversation.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/conversation.tsx",
+      "sha256": "d7ac46f1e7bc8e46bc49f67c768fc93aebdf17d816397cb35a40deff7173e875",
+      "workingSha256": "1875e32cc23a6e6c7291baa3ca2b34b5086ef8ab680bf14b6372da64e9c69553",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/message.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/message.tsx",
+      "working": "apps/web/src/components/ai-elements/message.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/message.tsx",
+      "sha256": "19c7755740e116f221e4247f7b6d4f20b57a44e4c4fcf66d2db5e1f111476509",
+      "workingSha256": "2affb1d58d6948cb254e6cec888c60dfa46f2f9b9936b3df3fb7fe4b3230ed74",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/prompt-input.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/prompt-input.tsx",
+      "working": "apps/web/src/components/ai-elements/prompt-input.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/prompt-input.tsx",
+      "sha256": "cf43baf5baa444b4ae06d250643b3fb2efd329c85f9b31a43e3aaf481dd27305",
+      "workingSha256": "6b032a8efeb41e9dcf7383518367da6b21c3c63e906543fc8c90e1a1d59b4f6d",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/tool.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/tool.tsx",
+      "working": "apps/web/src/components/ai-elements/tool.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/tool.tsx",
+      "sha256": "5b520e0c33792cba0ceb04e1cb18c69b212cffacdb52d7297e292c7af568dda4",
+      "workingSha256": "4e920248cf250ca34dc2e77792922bd8e393e26f8ba81c0e100008a285b73878",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/model-selector.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/model-selector.tsx",
+      "working": "apps/web/src/components/ai-elements/model-selector.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/model-selector.tsx",
+      "sha256": "a4d51f76ddf5197cb86b7f70ba62bd62327468a9acae1351a0b1adcb3710ec0a",
+      "workingSha256": "42b19903e6589ca2b8880d1d331fe46d3b3676c08044d050bec971fe4d2feeff",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "ai-elements",
+      "commit": "6a9d5b1822ffb10bba4bd97175f01edd7d8651cd",
+      "upstreamPath": "packages/elements/src/code-block.tsx",
+      "original": "vendor/ui/ai-elements/packages/elements/src/code-block.tsx",
+      "working": "apps/web/src/components/ai-elements/code-block.tsx",
+      "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/code-block.tsx",
+      "sha256": "5c7285171c5aa741749a1642a85f492a9b5e80dc4ccb704b5c3f58c45efebd04",
+      "workingSha256": "691ccd82abf8c573b7b1f9393527990fe26a3d6b98999597b98974054668d8e9",
+      "license": "vendor/ui/ai-elements/LICENSE"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/button.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/button.tsx",
+      "working": "apps/web/src/components/ui/button.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/button.tsx",
+      "sha256": "79dd6f75f8136394442202d6b8b922fb269eaad0a5dba579397c9d5b41f893bb",
+      "workingSha256": "557e27d5d3159c338da761c5aec138dcd32d313b5a55774ea8001c3f3bfc620c",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/button-group.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/button-group.tsx",
+      "working": "apps/web/src/components/ui/button-group.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/button-group.tsx",
+      "sha256": "a9ac862707ff8d78255f2696baf48f9a87d9e92e21eb476f8f9e9361313c1761",
+      "workingSha256": "7c861671c7df17a0c83e87e61cbafb5d94d0549f4cd2e8b5fe59af3d25135394",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/tooltip.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/tooltip.tsx",
+      "working": "apps/web/src/components/ui/tooltip.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/tooltip.tsx",
+      "sha256": "611e4305879b2773eafe76bf3c5caa69d8e47367fd97887a71634a27828f4433",
+      "workingSha256": "345bc589a285ece3622bf18f4c842107836cf6fc8a9055b0a604db0cf6c83551",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/badge.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/badge.tsx",
+      "working": "apps/web/src/components/ui/badge.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/badge.tsx",
+      "sha256": "13a9380dfff853ee730c14a52df49f22aecd31f40f2998d7c1e7ec458b6e1650",
+      "workingSha256": "0311bb21a5dc8c1e3d70ffc35cccc375c90e2f08bb0f0dd943dad72c19ed45ff",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/collapsible.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/collapsible.tsx",
+      "working": "apps/web/src/components/ui/collapsible.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/collapsible.tsx",
+      "sha256": "c6598e5584f4258b5d9fefadbc5ad6a66888ad58729f4b634a0bb2d9c513188b",
+      "workingSha256": "c6598e5584f4258b5d9fefadbc5ad6a66888ad58729f4b634a0bb2d9c513188b",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/command.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/command.tsx",
+      "working": "apps/web/src/components/ui/command.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/command.tsx",
+      "sha256": "319e9264567dd46f04d705028bc345470663ca5919f31292c4ec43ea5ceb9336",
+      "workingSha256": "47f33e1a635a0236d4a0c6f905e0d03b37ca08a6c8dde6c1f4bc0249bc9e07e3",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/dropdown-menu.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/dropdown-menu.tsx",
+      "working": "apps/web/src/components/ui/dropdown-menu.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/dropdown-menu.tsx",
+      "sha256": "d954efb735f13734751207ad22cb0cddd7f6ec53c59d16675d103dae08cb61fb",
+      "workingSha256": "c84b54bc6c8ae8f3ec5a8999000623b25776318739f2e91de3c70d85bb56e95a",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/hover-card.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/hover-card.tsx",
+      "working": "apps/web/src/components/ui/hover-card.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/hover-card.tsx",
+      "sha256": "73f59aa759656501ed615604ac3f2c04ba564acaea4529288fe3a487ad934953",
+      "workingSha256": "d646141a4f5b9d6ed47cb6b1854a6afbfeacd0dbbc0520078077b2eeca116956",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/input-group.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/input-group.tsx",
+      "working": "apps/web/src/components/ui/input-group.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/input-group.tsx",
+      "sha256": "e379899ac50d6cabc9d9eb1668f265176951c62b1fe83a6f23ee97fe8074d526",
+      "workingSha256": "3c7efabfb047063451f51f04a59a80a9018109b2e9035104c61bbfc557c2eddc",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/select.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/select.tsx",
+      "working": "apps/web/src/components/ui/select.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/select.tsx",
+      "sha256": "962830436bd0b7ee50e556f0747e277d6a86869ed27d167516346b15f26309d8",
+      "workingSha256": "a25676a80cb8ea9b90a1daad062dbbd84cafba68d72dd868f390c3bf487e230c",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/spinner.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/spinner.tsx",
+      "working": "apps/web/src/components/ui/spinner.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/spinner.tsx",
+      "sha256": "5d040fc49cb54c0296070644053b5a8840ddbfca89a430546bf308df3fffad65",
+      "workingSha256": "d07526a2f821962529e09e3b8dd55123eec0c753cced3983f8e1cbafcec7a737",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/dialog.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/dialog.tsx",
+      "working": "apps/web/src/components/ui/dialog.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/dialog.tsx",
+      "sha256": "2ade6074e5fad0a4eb171ead44c43d3301a3c83d186d7236fb1fdbea80ee556b",
+      "workingSha256": "0a85c31675f8269b3b1308fff0ab10d5cda1a090a550a1a74a8f7f439a92ea06",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/sheet.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/sheet.tsx",
+      "working": "apps/web/src/components/ui/sheet.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/sheet.tsx",
+      "sha256": "ea473d38a26a9b0b879e5a13139899ad45e9782e896b3fa205c7763a6c506876",
+      "workingSha256": "1431af1f2a0f4cd2623cf888241715fa312db1bc54af038d4518b0130b136993",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/input.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/input.tsx",
+      "working": "apps/web/src/components/ui/input.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/input.tsx",
+      "sha256": "0c9457181f6ddc80969bcf854e92c362903a55b6e889fbef3fd85343ecc4af5b",
+      "workingSha256": "7bfd0eff6c53a38c99184394a09f55e7a86c725de12d6a300fa46b3765114091",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/textarea.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/textarea.tsx",
+      "working": "apps/web/src/components/ui/textarea.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/textarea.tsx",
+      "sha256": "5cafcfeeee29534f449387a16b585f5923d2faab1a0cdc50a874416b175f59ce",
+      "workingSha256": "7c7122fc969c62228c691388aa1fe8b1eafe787ac25305a7a768f77d87d3c567",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/label.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/label.tsx",
+      "working": "apps/web/src/components/ui/label.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/label.tsx",
+      "sha256": "344bde38b8531615dbf8e14af3895517c24d8ef6ce56ddeda7e2e6fe4b5d0c00",
+      "workingSha256": "db5dfcd98a78c5b7c3c01e0bb7726a3adbf0470f4d552e777ccf4751b51e6a56",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/checkbox.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/checkbox.tsx",
+      "working": "apps/web/src/components/ui/checkbox.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/checkbox.tsx",
+      "sha256": "ba0ac64064e2d8fa7299d53e9e84b9a4772fef8dd4cf6170c56d3030a1d69941",
+      "workingSha256": "a7068fe7b1840081a0dfdb62a29a39bda24e3cff6752a8788249301a8a79e331",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/sidebar.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/sidebar.tsx",
+      "working": "apps/web/src/components/ui/sidebar.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/sidebar.tsx",
+      "sha256": "2ba1a9b9422f4172373f4cd0587b675d2331a41f4fa68f65dab2b23ca98fd9d2",
+      "workingSha256": "2d58178651ea6a2a730d01adc3e933424a91597ba45e5aa029ca191c323d6666",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/separator.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/separator.tsx",
+      "working": "apps/web/src/components/ui/separator.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/separator.tsx",
+      "sha256": "ad7d5403fe337160e41dbf04147896e448ae3a747b8d06660d627d74d60021bc",
+      "workingSha256": "f9ec8dde26a5c3f2af1c48a0c588c164e350567cddc5c4070cf5ba780e984f26",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/hooks/use-mobile.ts",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/hooks/use-mobile.ts",
+      "working": "apps/web/src/hooks/use-mobile.ts",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/hooks/use-mobile.ts",
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "workingSha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    },
+    {
+      "project": "shadcn",
+      "commit": "30a58d4498f270af1c1e981a7d78a15cf5740841",
+      "upstreamPath": "apps/v4/registry/new-york-v4/ui/skeleton.tsx",
+      "original": "vendor/ui/shadcn/apps/v4/registry/new-york-v4/ui/skeleton.tsx",
+      "working": "apps/web/src/components/ui/skeleton.tsx",
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/30a58d4498f270af1c1e981a7d78a15cf5740841/apps/v4/registry/new-york-v4/ui/skeleton.tsx",
+      "sha256": "f51ce0fcd31e5c31437382e80ea0af94b4fc3d64221d27091d36824546780a43",
+      "workingSha256": "ba48dd5be5a6a1378bd4e011028654b5bf419f1e7d20ee4b9f8330c1264e7239",
+      "license": "vendor/ui/shadcn/LICENSE.md"
+    }
+  ]
+}

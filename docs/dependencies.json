@@ -1,0 +1,605 @@
+{
+  "checkedAt": "2026-10-12",
+  "minimumReleaseAgeMinutes": 20160,
+  "cutoff": "2026-09-28",
+  "runtime": {
+    "version": "24.21.0",
+    "published": "2026-09-07",
+    "url": "https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.gz",
+    "checksums": "https://nodejs.org/dist/v24.21.0/SHASUMS256.txt",
+    "sha256": "6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff"
+  },
+  "pnpm": {
+    "version": "12.6.0",
+    "published": "2026-09-22T17:08:08.061Z",
+    "wrapperIntegrity": "sha512-PvaPlRyxEawgS0paFvCy3fDaVqluBBPoHYVdnwtV75JnFHCQKOHNAMQFwsX7e56OxNxGd3yAXQNzwvL/AP0g7A==",
+    "bootstrapDecision": "pnpm 12 is a native wrapper with external optional dependencies. Bootstrap verifies dependency-free official platform tarballs and directly copies the binary; no npm install or lifecycle scripts run.",
+    "platforms": {
+      "linux-x64-glibc": {
+        "name": "@pnpm/exe.linux-x64",
+        "version": "12.6.0",
+        "published": "2026-09-22T17:06:30.417Z",
+        "url": "https://registry.npmjs.org/@pnpm/exe.linux-x64/-/exe.linux-x64-12.6.0.tgz",
+        "integrity": "sha512-qFWBneHJAJ73W4whtbaFOL1M/7DBC6ILHXuxc7ZPtEhfPuT1zeZiGrmKHoMAfJA+mcm6xhOFljqVTUS+00Jabw=="
+      },
+      "win32-x64": {
+        "name": "@pnpm/exe.win32-x64",
+        "version": "12.6.0",
+        "published": "2026-09-22T17:06:20.423Z",
+        "url": "https://registry.npmjs.org/@pnpm/exe.win32-x64/-/exe.win32-x64-12.6.0.tgz",
+        "integrity": "sha512-L2tuyrD2+Imgxs3VK/ST/2L3xD6vDP0ktJQxM0TaGw7TbAQEMq+RMc8iK6Ew7Id579uzjJe8jSfJID2ZGsOHCA=="
+      }
+    }
+  },
+  "packages": [
+    {
+      "name": "typescript",
+      "version": "6.0.3",
+      "published": "2026-04-16T23:38:27.905Z",
+      "integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+      "url": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
+      "engines": {
+        "node": ">=14.17"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "tsx",
+      "version": "4.23.15",
+      "published": "2026-09-20T07:22:17.792Z",
+      "integrity": "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==",
+      "url": "https://registry.npmjs.org/tsx/-/tsx-4.23.15.tgz",
+      "engines": {
+        "node": ">=18.0.0"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "vitest",
+      "version": "5.0.2",
+      "published": "2026-09-25T09:00:46.560Z",
+      "integrity": "sha512-7MQrx9pDv5aHiUcovIb/70Ys3tgtkUVgCtledvKdCmEO+/1Dicq5ZqoSxOW034m03oqC+oHOKui2dM6qtMLoJg==",
+      "url": "https://registry.npmjs.org/vitest/-/vitest-5.0.2.tgz",
+      "engines": {
+        "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+      },
+      "peers": {
+        "vite": "^6.4.0 || ^7.0.0 || ^8.0.0",
+        "jsdom": "*",
+        "happy-dom": "*",
+        "@vitest/ui": "5.0.2",
+        "@types/node": "^22.0.0 || >=24.0.0",
+        "@edge-runtime/vm": "*",
+        "@opentelemetry/api": "^1.9.0",
+        "@vitest/coverage-v8": "5.0.2",
+        "@vitest/browser-preview": "5.0.2",
+        "@vitest/coverage-istanbul": "5.0.2",
+        "@vitest/browser-playwright": "5.0.2",
+        "@vitest/browser-webdriverio": "^5.0.0-beta.5 || >=5.0.0"
+      },
+      "optionalPeers": {
+        "vite": {
+          "optional": false
+        },
+        "jsdom": {
+          "optional": true
+        },
+        "happy-dom": {
+          "optional": true
+        },
+        "@vitest/ui": {
+          "optional": true
+        },
+        "@types/node": {
+          "optional": true
+        },
+        "@edge-runtime/vm": {
+          "optional": true
+        },
+        "@opentelemetry/api": {
+          "optional": true
+        },
+        "@vitest/coverage-v8": {
+          "optional": true
+        },
+        "@vitest/browser-preview": {
+          "optional": true
+        },
+        "@vitest/coverage-istanbul": {
+          "optional": true
+        },
+        "@vitest/browser-playwright": {
+          "optional": true
+        },
+        "@vitest/browser-webdriverio": {
+          "optional": true
+        }
+      }
+    },
+    {
+      "name": "@playwright/test",
+      "version": "1.63.0",
+      "published": "2026-09-04T22:44:00.304Z",
+      "integrity": "sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ==",
+      "url": "https://registry.npmjs.org/@playwright/test/-/test-1.63.0.tgz",
+      "engines": {
+        "node": ">=20"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@types/node",
+      "version": "24.19.0",
+      "published": "2026-09-25T22:09:25.850Z",
+      "integrity": "sha512-zY+5tKxXdhGh1PYI0ac+7juvEu4OI6vWtVVoj5i2m42jxAY1U+zHGt6QCyOFwykdP62sM3MJ9stoYYUw5aCWew==",
+      "url": "https://registry.npmjs.org/@types/node/-/node-24.19.0.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "react",
+      "version": "19.3.0",
+      "published": "2026-09-09T17:21:30.071Z",
+      "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==",
+      "url": "https://registry.npmjs.org/react/-/react-19.3.0.tgz",
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "react-dom",
+      "version": "19.3.0",
+      "published": "2026-09-09T17:17:39.744Z",
+      "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==",
+      "url": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^19.3.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "ai",
+      "version": "7.0.118",
+      "published": "2026-09-27T06:08:49.678Z",
+      "integrity": "sha512-ZjkbbOffH09yQAjeZ5yGXd8ePTQlFIyKH5aW0s0LOMmvaR1TSoeg5wVURwLvFry/IzzaLndmw9glTKwWRoog3Q==",
+      "url": "https://registry.npmjs.org/ai/-/ai-7.0.118.tgz",
+      "engines": {
+        "node": ">=22"
+      },
+      "peers": {
+        "zod": "^3.25.76 || ^4.1.8"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "zod",
+      "version": "4.6.5",
+      "published": "2026-09-13T23:25:14.644Z",
+      "integrity": "sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==",
+      "url": "https://registry.npmjs.org/zod/-/zod-4.6.5.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "streamdown",
+      "version": "2.6.0",
+      "published": "2026-08-24T14:07:33.027Z",
+      "integrity": "sha512-nQZVUn4GvB2R5SAlDNph20iKZeW+RM4gv6G1H3ACypEnmQf8PgTHZ/1Ta2OACRwQ2coK7aW5AeIAa7Ls5zk+RA==",
+      "url": "https://registry.npmjs.org/streamdown/-/streamdown-2.6.0.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "lucide-react",
+      "version": "1.48.0",
+      "published": "2026-09-24T05:53:14.788Z",
+      "integrity": "sha512-R0CIKY/fXiC6y9xRBADgsK+VW2p/pcTJOMhLZf1T+uG+vJUvyUR02nGOgmIIC7MPkiNK4Ox8QDnbqF8rJYWPZQ==",
+      "url": "https://registry.npmjs.org/lucide-react/-/lucide-react-1.48.0.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "use-stick-to-bottom",
+      "version": "1.1.6",
+      "published": "2026-06-04T21:02:18.160Z",
+      "integrity": "sha512-z3Up8jYQGTkUCsGBnwg6/wj70KgXoW5Kz1AAc1j8MtQuYMBo6ZsdhrIXoegxa7gaMMilgQYyTohTrt3p94jHog==",
+      "url": "https://registry.npmjs.org/use-stick-to-bottom/-/use-stick-to-bottom-1.1.6.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "nanoid",
+      "version": "6.0.1",
+      "published": "2026-08-03T10:59:07.795Z",
+      "integrity": "sha512-3wVS3i51pE2pi1k5FFL/95BGfVS0kSsvDVuGXHOtxox/TywUmtgq+3qiTOTbs9J7KfHaXPiN171k/A6dBnaXFw==",
+      "url": "https://registry.npmjs.org/nanoid/-/nanoid-6.0.1.tgz",
+      "engines": {
+        "node": "^22 || ^24 || >=26"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "clsx",
+      "version": "2.1.1",
+      "published": "2024-04-23T05:26:04.645Z",
+      "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==",
+      "url": "https://registry.npmjs.org/clsx/-/clsx-2.1.1.tgz",
+      "engines": {
+        "node": ">=6"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "tailwind-merge",
+      "version": "3.7.0",
+      "published": "2026-09-12T20:10:15.257Z",
+      "integrity": "sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==",
+      "url": "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-3.7.0.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "class-variance-authority",
+      "version": "0.7.1",
+      "published": "2024-11-26T08:20:34.604Z",
+      "integrity": "sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==",
+      "url": "https://registry.npmjs.org/class-variance-authority/-/class-variance-authority-0.7.1.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@streamdown/cjk",
+      "version": "1.0.3",
+      "published": "2026-03-17T17:35:05.414Z",
+      "integrity": "sha512-WRg8HR/gHbBoTgsMd91OKFUClIoDcEFVofJvluvEAyjx3KpU0aGgD9tGDqHkHj14ShoMSkX0IYetWGegTcwIJw==",
+      "url": "https://registry.npmjs.org/@streamdown/cjk/-/cjk-1.0.3.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "@streamdown/code",
+      "version": "1.1.1",
+      "published": "2026-03-17T17:35:05.659Z",
+      "integrity": "sha512-i7HTNuDgZWb+VdrNVOam9gQhIc5MSSDXKWXgbUrn/4vSRaSMM+Rtl10MQj4wLWPNpF7p80waJsAqFP8HZfb0Jg==",
+      "url": "https://registry.npmjs.org/@streamdown/code/-/code-1.1.1.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "@streamdown/math",
+      "version": "1.0.2",
+      "published": "2026-02-09T17:31:31.085Z",
+      "integrity": "sha512-r8Ur9/lBuFnzZAFdEWrLUF2s/gRwRRRwruqltdZibyjbCBnuW7SJbFm26nXqvpJPW/gzpBUMrBVBzd88z05D5g==",
+      "url": "https://registry.npmjs.org/@streamdown/math/-/math-1.0.2.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "@streamdown/mermaid",
+      "version": "1.0.2",
+      "published": "2026-02-09T17:31:31.182Z",
+      "integrity": "sha512-Fr/4sBWnAeSnxM3PcrV/+DiZe5oPMq9gOkUIAH7ZauJeuwrZ/DVzD4g0zlav6AH0axh2m/sOfrfLtY5aLT7niw==",
+      "url": "https://registry.npmjs.org/@streamdown/mermaid/-/mermaid-1.0.2.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18.0.0 || ^19.0.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "shiki",
+      "version": "4.4.3",
+      "published": "2026-08-10T04:57:41.135Z",
+      "integrity": "sha512-Mb/GvXPHBAXdgGIcnfU5L3ldpn1XcxrGkPHwqgRx17/I2XRfqlFKk2vGkHWINn1kdXvzJZeuO3is6I9KLPFm0g==",
+      "url": "https://registry.npmjs.org/shiki/-/shiki-4.4.3.tgz",
+      "engines": {
+        "node": ">=20"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "radix-ui",
+      "version": "1.6.7",
+      "published": "2026-07-24T23:51:30.916Z",
+      "integrity": "sha512-QBdhh1arIEUvPC0dQ5+nwWAxt7+N+oP/9jPwjJkGFoSk/sqxg32gJtSXGtFh8frAIcS6oC9cx2Q+7KYCQLOAeA==",
+      "url": "https://registry.npmjs.org/radix-ui/-/radix-ui-1.6.7.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "optionalPeers": {
+        "@types/react": {
+          "optional": true
+        },
+        "@types/react-dom": {
+          "optional": true
+        }
+      }
+    },
+    {
+      "name": "cmdk",
+      "version": "1.1.1",
+      "published": "2025-03-14T19:21:16.194Z",
+      "integrity": "sha512-Vsv7kFaXm+ptHDMZ7izaRsP70GgrW9NBNGswt9OZaVBLlE0SNpDq8eu/VGXyF9r7M0azK3Wy7OlYXsuyYLFzHg==",
+      "url": "https://registry.npmjs.org/cmdk/-/cmdk-1.1.1.tgz",
+      "engines": {},
+      "peers": {
+        "react": "^18 || ^19 || ^19.0.0-rc",
+        "react-dom": "^18 || ^19 || ^19.0.0-rc"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "vite",
+      "version": "8.3.1",
+      "published": "2026-09-24T12:26:19.940Z",
+      "integrity": "sha512-/bvH9E9tmCXRGp2uXY3WbOldqpTwFkbha/8ANaEQ6VkxhH60KyqLwgZq6lG2y+4uT55x9+9eUHMpQ7uGnOCKjA==",
+      "url": "https://registry.npmjs.org/vite/-/vite-8.3.1.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peers": {
+        "tsx": "^4.8.1",
+        "jiti": ">=1.21.0",
+        "less": "^4.0.0",
+        "sass": "^1.70.0",
+        "yaml": "^2.4.2",
+        "stylus": ">=0.54.8",
+        "terser": "^5.16.0",
+        "esbuild": "^0.27.0 || ^0.28.0",
+        "sugarss": "^5.0.0",
+        "@types/node": "^20.19.0 || >=22.12.0",
+        "sass-embedded": "^1.70.0",
+        "@vitejs/devtools": "^0.7.1"
+      },
+      "optionalPeers": {
+        "tsx": {
+          "optional": true
+        },
+        "jiti": {
+          "optional": true
+        },
+        "less": {
+          "optional": true
+        },
+        "sass": {
+          "optional": true
+        },
+        "yaml": {
+          "optional": true
+        },
+        "stylus": {
+          "optional": true
+        },
+        "terser": {
+          "optional": true
+        },
+        "esbuild": {
+          "optional": true
+        },
+        "sugarss": {
+          "optional": true
+        },
+        "@types/node": {
+          "optional": true
+        },
+        "sass-embedded": {
+          "optional": true
+        },
+        "@vitejs/devtools": {
+          "optional": true
+        }
+      }
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "version": "6.1.1",
+      "published": "2026-08-28T03:30:56.619Z",
+      "integrity": "sha512-yxLaQV9gkhS8ezJqCM6+ndU7mDY6gqAg75NQ+0IjwEI8IYOmQCgkRwHKVSfWXW076DsqMo0Dk+0FK1U+M5RgFw==",
+      "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-6.1.1.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peers": {
+        "vite": "^8.0.0",
+        "oxc-transform-react": "^0.145.0",
+        "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0",
+        "babel-plugin-react-compiler": "^1.0.0"
+      },
+      "optionalPeers": {
+        "oxc-transform-react": {
+          "optional": true
+        },
+        "@rolldown/plugin-babel": {
+          "optional": true
+        },
+        "babel-plugin-react-compiler": {
+          "optional": true
+        }
+      }
+    },
+    {
+      "name": "tailwindcss",
+      "version": "4.3.3",
+      "published": "2026-07-16T12:03:35.267Z",
+      "integrity": "sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==",
+      "url": "https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.3.3.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@tailwindcss/vite",
+      "version": "4.3.3",
+      "published": "2026-07-16T12:04:06.316Z",
+      "integrity": "sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==",
+      "url": "https://registry.npmjs.org/@tailwindcss/vite/-/vite-4.3.3.tgz",
+      "engines": {},
+      "peers": {
+        "vite": "^5.2.0 || ^6 || ^7 || ^8"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "@types/react",
+      "version": "19.3.0",
+      "published": "2026-09-09T18:08:49.750Z",
+      "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==",
+      "url": "https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "19.3.0",
+      "published": "2026-09-09T18:07:51.886Z",
+      "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==",
+      "url": "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz",
+      "engines": {},
+      "peers": {
+        "@types/react": "^19.3.0"
+      },
+      "optionalPeers": {}
+    },
+    {
+      "name": "@earendil-works/pi-ai",
+      "version": "0.87.1",
+      "published": "2026-09-22T19:38:28.192Z",
+      "integrity": "sha512-X/3PfQBnnoeVdO9Cv8zHghUMglzlgNZYGNzoPnbRoGnHl3Rw3TlA2UKSUB7BRHUOxMryHXYa8dnjWZlbRheDZA==",
+      "url": "https://registry.npmjs.org/@earendil-works/pi-ai/-/pi-ai-0.87.1.tgz",
+      "engines": {
+        "node": ">=22.19.0"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "fastify",
+      "version": "5.12.5",
+      "published": "2026-09-16T07:37:06.302Z",
+      "integrity": "sha512-OB2k1dlxs5/NAABqeKV2FUHkSD2BbENsCak8yULVcymn3fHIPDVa9TI3SDnJSWYSllZmSYuZXy2gTnsT+Sut1A==",
+      "url": "https://registry.npmjs.org/fastify/-/fastify-5.12.5.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "typebox",
+      "version": "1.3.27",
+      "published": "2026-09-05T04:10:13.630Z",
+      "integrity": "sha512-zu+jc1pcy4UiNThxikUr36f0Rybk9PEeCg/NE6adeWr/SKsdNO4EzZHYRDlv2YCVAfj3Odq3dESSo/jNyoBXzA==",
+      "url": "https://registry.npmjs.org/typebox/-/typebox-1.3.27.tgz",
+      "engines": {},
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@earendil-works/pi-agent-core",
+      "version": "0.87.1",
+      "published": "2026-09-22T19:37:10.224Z",
+      "integrity": "sha512-Zev3B0HK7YS5A4EZQ2XnEqiJuirx6QBiltJ+LpmjV5a/+2IU0cfKtIfnkNkORK707XOvKBY2WRtk7cAwHpbh2Q==",
+      "url": "https://registry.npmjs.org/@earendil-works/pi-agent-core/-/pi-agent-core-0.87.1.tgz",
+      "engines": {
+        "node": ">=22.19.0"
+      },
+      "peers": {},
+      "optionalPeers": {}
+    },
+    {
+      "name": "@fastify/static",
+      "version": "10.1.5",
+      "published": "2026-09-26T07:38:36.557Z",
+      "integrity": "sha512-3r0ZFXo82nKlPzySOUYhwWVfPZStfiwjmyevkX7cJWL2yXmEzl0Rpxv+L6L1R4OxqvlDGqf3g8OdBzILKgqe6w==",
+      "url": "https://registry.npmjs.org/@fastify/static/-/static-10.1.5.tgz",
+      "engines": {},
+      "peers": {}
+    }
+  ],
+  "decisions": [
+    {
+      "name": "why-is-node-running",
+      "version": "3.2.1",
+      "reason": "3.2.2 lacks provenance previously present in 3.2.1; trustPolicy no-downgrade rejects it. 3.2.3 is only three days old. Pin vetted provenance-bearing 3.2.1 within Vitest ^3.2.1 range.",
+      "published": "2024-10-29T17:08:48.344Z",
+      "integrity": "sha512-Tb2FUhB4vUsGQlfSquQLYkApkuPAFQXGFzxWKHHumVz2dK+X1RUm/HnID4+TfIGYJ1kTcwOaCk/buYCEJr6YjQ=="
+    },
+    {
+      "name": "@fastify/static",
+      "version": "10.1.5",
+      "reason": "8.3.0 fails high audit GHSA-83w8-p2f5-377r. Patched >=10.1.1; selected aged10.1.5. Verified published index.js plugin metadata fastify5.x and README compatibility >=8.x with Fastify^5.x."
+    }
+  ],
+  "buildScriptReview": [
+    {
+      "name": "esbuild",
+      "version": "0.28.2",
+      "allowed": true,
+      "reason": "Read complete install.js. Locates exact optional platform binary, verifies version and optimizes local link. Network fallback pins same version and validates binary SHA256 from manifest.",
+      "published": "2026-08-08T20:00:55.454Z",
+      "integrity": "sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA=="
+    },
+    {
+      "name": "@google/genai",
+      "version": "2.21.0",
+      "allowed": false,
+      "reason": "preinstall is echo no-op; no build necessary, published dist is complete. prepare not shipped and not needed.",
+      "published": "2026-09-02T17:28:22.891Z",
+      "integrity": "sha512-+PDtco2/Z0ONdzCGekCoCT+O1VJS9xJQNN4XzQpXG/t3El/SWWMkCWlFRO1KmivOHPa4Q0VjUYu1HBKCZ/v33Q=="
+    },
+    {
+      "name": "protobufjs",
+      "version": "7.6.6",
+      "allowed": false,
+      "reason": "Read scripts/postinstall.js; only warns about dependent semver ranges. No runtime build necessary.",
+      "published": "2026-08-27T10:15:37.337Z",
+      "integrity": "sha512-dYDWdjSl5RNb7SgPxGQcRU+GtvP7s2fpkrY0r432PcOIaZ0/rBcxEZnQN67iJhFuQiVw754JDoPruPCNdGsbjg=="
+    }
+  ],
+  "configuration": {
+    "source": "pnpm-workspace.yaml (pnpm12 ignores non-auth/registry settings in .npmrc)",
+    "reference": "https://pnpm.io/settings/cli#pmonfail",
+    "pmOnFail": "error",
+    "reason": "pnpm11 removed managePackageManagerVersions/packageManagerStrictVersion. pmOnFail:error enforces exact packageManager without automatic switching; engineStrict/saveExact are effective YAML settings."
+  },
+  "audit": {
+    "command": "pnpm audit --prod --audit-level=high",
+    "result": "pass: zero high or critical; one low KaTeX GHSA-238p-pmpm-9mq7 (requires existing prototype pollution)",
+    "lowAdvisory": "https://github.com/advisories/GHSA-238p-pmpm-9mq7"
+  }
+}

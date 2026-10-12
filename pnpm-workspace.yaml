@@ -1,0 +1,17 @@
+packages:
+  - apps/*
+  - packages/*
+
+minimumReleaseAge: 20160
+blockExoticSubdeps: true
+trustPolicy: no-downgrade
+strictDepBuilds: true
+allowBuilds:
+  esbuild@0.28.2: true
+  "@google/genai@2.21.0": false
+  protobufjs@7.6.6: false
+overrides:
+  why-is-node-running: 3.2.1
+engineStrict: true
+saveExact: true
+pmOnFail: error
