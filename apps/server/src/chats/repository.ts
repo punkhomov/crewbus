@@ -78,6 +78,14 @@ export class RunRepository {
   unfinished(): RunSummary[] {
     return this.db.prepare("SELECT * FROM runs WHERE status='running' ORDER BY ordinal").all().map(r => runDTO(r as Row));
   }
+  findRequest(chatId: string, input: StartRunInput): { runId: string; created: false } | undefined {
+    if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 16000 || typeof input.clientRequestId !== 'string' || !input.clientRequestId.trim()) invalid();
+    this.chats.get(chatId);
+    const prior = this.db.prepare('SELECT id,input_text FROM runs WHERE chat_id=? AND client_request_id=?').get(chatId, input.clientRequestId);
+    if (!prior) return;
+    if (prior.input_text !== input.text) conflict();
+    return {runId:String(prior.id),created:false};
+  }
   accept(chatId: string, input: StartRunInput, systemPrompt: string) {
     if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 16000 || typeof input.clientRequestId !== 'string' || !input.clientRequestId.trim() || typeof systemPrompt !== 'string')
       invalid();
@@ -109,7 +117,7 @@ export class RunRepository {
   finish(id: string, status: Exclude<RunSummary['status'], 'running'>, reason: RunSummary['reason'] = null, error: string | null = null): RunSummary {
     return transaction(this.db, () => {
       this.get(id);
-      this.db.prepare('UPDATE runs SET status=?,reason=?,error=?,ended_at=? WHERE id=?').run(status, reason, error, Date.now(), id);
+      this.db.prepare("UPDATE runs SET status=?,reason=?,error=?,ended_at=? WHERE id=? AND status='running'").run(status, reason, error, Date.now(), id);
       return this.get(id);
     });
   }

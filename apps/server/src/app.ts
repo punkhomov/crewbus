@@ -7,10 +7,12 @@ import { builtinModels } from '@earendil-works/pi-ai/providers/all';
 import { SqliteCredentialStore } from './storage/credential-store.js';
 import { createCatalog, type CatalogService } from './providers/catalog.js';
 import { registerProviderRoutes } from './providers/routes.js';
+import { createRunManager, type RunManager } from './chats/run-manager.js';
 import { AppError } from './lib/error.js';
 declare module 'fastify' {
   interface FastifyInstance {
     storage: Storage;
+    runs: RunManager;
     catalog: CatalogService;
     models: Models;
   }
@@ -28,11 +30,14 @@ export async function createApp(options: AppOptions): Promise<FastifyInstance> {
   app.decorate('storage', storage);
   const credentials = new SqliteCredentialStore(storage);
   const models = options.models ?? builtinModels({credentials, authContext:{env:async () => undefined,fileExists:async () => false}});
-  const catalog = createCatalog(models, credentials, id => storage.runs.unfinished().some(run => storage.runs.details(run.id).providerId === id));
+  const catalog = createCatalog(models, credentials, id => runs.isProviderBusy(id));
+  const runs = createRunManager({storage,models,catalog});
+  app.decorate('runs', runs);
   app.decorate('models', models);
   app.decorate('catalog', catalog);
   registerProviderRoutes(app, catalog);
-  app.addHook('onClose', () => {
+  app.addHook('onClose', async () => {
+    await runs.close();
     if (storage.database.isOpen)
       storage.close();
   });
