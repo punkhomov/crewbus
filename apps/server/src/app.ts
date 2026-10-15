@@ -1,4 +1,7 @@
 import Fastify from 'fastify';
+import { registerChatRoutes } from './chats/routes.js';
+import { registerTodoRoutes } from './todos/routes.js';
+import { registerSseRoutes } from './events/sse.js';
 import type { FastifyInstance } from 'fastify';
 import type { Models } from '@earendil-works/pi-ai';
 import { createStorage } from './storage/index.js';
@@ -24,7 +27,7 @@ export interface AppOptions {
 export async function createApp(options: AppOptions): Promise<FastifyInstance> {
   const app = Fastify({
     logger: false,
-    ajv: {customOptions: {removeAdditional: false}}
+    ajv: {customOptions: {removeAdditional: false, coerceTypes: false}}
   });
   const storage = createStorage(options.dataDir);
   app.decorate('storage', storage);
@@ -36,6 +39,9 @@ export async function createApp(options: AppOptions): Promise<FastifyInstance> {
   app.decorate('models', models);
   app.decorate('catalog', catalog);
   registerProviderRoutes(app, catalog);
+  registerChatRoutes(app);
+  registerTodoRoutes(app);
+  registerSseRoutes(app);
   app.addHook('onClose', async () => {
     await runs.close();
     if (storage.database.isOpen)
