@@ -25,7 +25,8 @@
     "@streamdown/mermaid": "1.0.2",
     "shiki": "4.4.3",
     "radix-ui": "1.6.7",
-    "cmdk": "1.1.1"
+    "cmdk": "1.1.1",
+    "@crewbus/contracts": "workspace:*"
   },
   "devDependencies": {
     "vite": "8.3.1",

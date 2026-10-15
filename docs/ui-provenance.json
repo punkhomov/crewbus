@@ -53,7 +53,7 @@
       "working": "apps/web/src/components/ai-elements/tool.tsx",
       "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/tool.tsx",
       "sha256": "5b520e0c33792cba0ceb04e1cb18c69b212cffacdb52d7297e292c7af568dda4",
-      "workingSha256": "4e920248cf250ca34dc2e77792922bd8e393e26f8ba81c0e100008a285b73878",
+      "workingSha256": "a736aefc8405153b95ecba537bf0dd4f8e2816521253c0e6a0f0752591876560",
       "license": "vendor/ui/ai-elements/LICENSE"
     },
     {
@@ -75,7 +75,7 @@
       "working": "apps/web/src/components/ai-elements/code-block.tsx",
       "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/code-block.tsx",
       "sha256": "5c7285171c5aa741749a1642a85f492a9b5e80dc4ccb704b5c3f58c45efebd04",
-      "workingSha256": "691ccd82abf8c573b7b1f9393527990fe26a3d6b98999597b98974054668d8e9",
+      "workingSha256": "35093bed191f948414817e3f07f224eb24c402895f46be6e06f205afb09bf93a",
       "license": "vendor/ui/ai-elements/LICENSE"
     },
     {

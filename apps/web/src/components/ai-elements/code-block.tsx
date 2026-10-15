@@ -141,11 +141,9 @@ const tokensCache = new Map<string, TokenizedCode>();
 // Subscribers for async token updates
 const subscribers = new Map<string, Set<(result: TokenizedCode) => void>>();
 
-const getTokensCacheKey = (code: string, language: BundledLanguage) => {
-  const start = code.slice(0, 100);
-  const end = code.length > 100 ? code.slice(-100) : "";
-  return `${language}:${code.length}:${start}:${end}`;
-};
+// Full input is part of the identity: equal-length JSON can differ only in its middle.
+const getTokensCacheKey = (code: string, language: BundledLanguage) =>
+  JSON.stringify([language, code]);
 
 const getHighlighter = (
   language: BundledLanguage

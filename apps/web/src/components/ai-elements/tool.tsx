@@ -47,11 +47,11 @@ export type ToolHeaderProps = {
 const statusLabels: Record<ToolPart["state"], string> = {
   "approval-requested": "Awaiting Approval",
   "approval-responded": "Responded",
-  "input-available": "Running",
+  "input-available": "Выполняется",
   "input-streaming": "Pending",
-  "output-available": "Completed",
+  "output-available": "Готово",
   "output-denied": "Denied",
-  "output-error": "Error",
+  "output-error": "Ошибка",
 };
 
 const statusIcons: Record<ToolPart["state"], ReactNode> = {
@@ -59,9 +59,9 @@ const statusIcons: Record<ToolPart["state"], ReactNode> = {
   "approval-responded": <CheckCircleIcon className="size-4 text-blue-600" />,
   "input-available": <ClockIcon className="size-4 animate-pulse" />,
   "input-streaming": <CircleIcon className="size-4" />,
-  "output-available": <CheckCircleIcon className="size-4 text-green-600" />,
+  "output-available": <CheckCircleIcon className="size-4 text-primary" />,
   "output-denied": <XCircleIcon className="size-4 text-orange-600" />,
-  "output-error": <XCircleIcon className="size-4 text-red-600" />,
+  "output-error": <XCircleIcon className="size-4 text-destructive" />,
 };
 
 export const getStatusBadge = (status: ToolPart["state"]) => (
@@ -119,7 +119,7 @@ export type ToolInputProps = ComponentProps<"div"> & {
 export const ToolInput = ({ className, input, ...props }: ToolInputProps) => (
   <div className={cn("space-y-2 overflow-hidden", className)} {...props}>
     <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-      Parameters
+      Аргументы
     </h4>
     <div className="rounded-md bg-muted/50">
       <CodeBlock code={JSON.stringify(input, null, 2)} language="json" />
@@ -155,7 +155,7 @@ export const ToolOutput = ({
   return (
     <div className={cn("space-y-2", className)} {...props}>
       <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-        {errorText ? "Error" : "Result"}
+        {errorText ? "Ошибка" : "Результат"}
       </h4>
       <div
         className={cn(
