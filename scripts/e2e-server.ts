@@ -51,7 +51,12 @@ function responses(scenario: Scenario) {
 }
 responses("todo");
 const dataDir = await mkdtemp(join(tmpdir(), "crewbus-e2e-worker-0-"));
+// Real child dies after the SQLite commit, before the agent receives its result.
+const { crashRun } = await import('../apps/server/test/fixtures/crash-after-tool.js');
+const recoveryFixture = await crashRun(dataDir);
 const app = await createApp({ dataDir, models });
+app.storage.database.prepare('UPDATE chats SET title=? WHERE id=?').run('Восстановленный диалог', recoveryFixture.chatId);
+app.get('/api/__e2e/recovery', async () => recoveryFixture);
 // Test-only control and persisted fixtures. This entrypoint is never imported by production.
 app.post<{ Body: { scenario: Scenario } }>(
   "/api/__e2e/scenario",

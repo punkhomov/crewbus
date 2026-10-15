@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { recoverInterrupted } from './chats/recovery.js';
 import { registerChatRoutes } from './chats/routes.js';
 import { registerTodoRoutes } from './todos/routes.js';
 import { registerSseRoutes } from './events/sse.js';
@@ -30,6 +31,7 @@ export async function createApp(options: AppOptions): Promise<FastifyInstance> {
     ajv: {customOptions: {removeAdditional: false, coerceTypes: false}}
   });
   const storage = createStorage(options.dataDir);
+  try { recoverInterrupted(storage); } catch (error) { storage.close(); throw error; }
   app.decorate('storage', storage);
   const credentials = new SqliteCredentialStore(storage);
   const models = options.models ?? builtinModels({credentials, authContext:{env:async () => undefined,fileExists:async () => false}});
