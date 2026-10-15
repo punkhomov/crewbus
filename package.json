@@ -13,7 +13,10 @@
     "test": "pnpm build:packages && vitest run",
     "test:e2e": "playwright test",
     "dev:server": "pnpm build:packages && pnpm --filter @crewbus/server dev",
-    "dev:web": "pnpm --filter @crewbus/web dev"
+    "dev:web": "pnpm --filter @crewbus/web dev",
+    "start": "pnpm --filter @crewbus/server start",
+    "verify:ui": "node scripts/verify-ui-provenance.mjs",
+    "test:docker": "node scripts/docker-smoke.mjs"
   },
   "devDependencies": {
     "typescript": "6.0.3",

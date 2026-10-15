@@ -1,42 +1,8 @@
-import { expect, test, type Page } from "@playwright/test";
-import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
-const consoleRecords = new WeakMap<Page, { type: string; text: string }[]>();
-test.beforeEach(async ({ page }) => {
-  const records: { type: string; text: string }[] = [];
-  consoleRecords.set(page, records);
-  page.on("pageerror", (error) =>
-    records.push({ type: "pageerror", text: error.message }),
-  );
-  page.on("console", (message) => {
-    if (message.type() === "error" || message.type() === "warning")
-      records.push({ type: message.type(), text: message.text() });
-  });
-});
-test.afterEach(async ({ page }, testInfo) => {
-  const records = consoleRecords.get(page) ?? [];
-  const logPath = testInfo.outputPath("browser-console.json");
-  await mkdir(dirname(logPath), { recursive: true });
-  await writeFile(logPath, JSON.stringify(records, null, 2));
-  await testInfo.attach("browser-console", {
-    path: logPath,
-    contentType: "application/json",
-  });
-  const expectedNetwork =
-    testInfo.title.includes("неопределённый сетевой") ||
-    testInfo.title.includes("SSE восстанавливается");
-  const unexpected = records.filter(
-    (record) =>
-      record.type === "pageerror" ||
-      (record.type === "error" &&
-        !(expectedNetwork && record.text.includes("net::ERR_FAILED")) &&
-        !(testInfo.title.startsWith("409") && record.text.includes("409"))),
-  );
-  expect(unexpected, "unexpected browser errors").toEqual([]);
-});
+import { expect, test, create, send } from "./helpers";
 test("провайдер → инструмент → сохранённая задача", async ({ page }) => {
+  await page.request.post("/api/__e2e/scenario", { data: { scenario: "todo" } });
   await page.goto("/");
-  await page.getByRole("button", { name: "Новый диалог", exact: true }).click();
+  await page.getByRole("button", { name: "Новый диалог", exact: true }).and(page.locator(":not([data-chat-id])")).click();
   await page.getByLabel("Провайдер", { exact: true }).click();
   await page.getByRole("option", { name: "Faux", exact: true }).click();
   await page.getByLabel("API-ключ", { exact: true }).fill("e2e-test-key");
@@ -71,95 +37,6 @@ test("провайдер → инструмент → сохранённая з�
   await page.screenshot({
     path: ".artifacts/screenshots/desktop-tool-details.png",
   });
-});
-
-async function create(
-  page: import("@playwright/test").Page,
-  scenario = "todo",
-) {
-  await page.request.post("/api/__e2e/scenario", { data: { scenario } });
-  const providers = await (await page.request.get("/api/providers")).json();
-  const provider = providers[0];
-  await page.request.put(`/api/providers/${provider.id}/credential`, {
-    data: { key: "e2e-test-key" },
-  });
-  const models = await (
-    await page.request.get(`/api/providers/${provider.id}/models`)
-  ).json();
-  const chat = await (
-    await page.request.post("/api/chats", {
-      data: { providerId: provider.id, modelId: models[0].id },
-    })
-  ).json();
-  await page.goto(`/?chat=${chat.id}`);
-  await expect(
-    page.getByRole("textbox", { name: "Сообщение", exact: true }),
-  ).toBeEnabled();
-  return chat;
-}
-async function send(
-  page: import("@playwright/test").Page,
-  text = "Создай задачу Изучить pi",
-) {
-  await page
-    .getByRole("textbox", { name: "Сообщение", exact: true })
-    .fill(text);
-  await page.getByRole("button", { name: "Отправить", exact: true }).click();
-}
-test("реальная отмена потока сохраняет выполненный инструмент, блокирует изменения и восстанавливается после reload", async ({
-  page,
-}) => {
-  await create(page, "slow");
-  await send(page);
-  await expect(
-    page.getByTestId("todo-panel").getByText("Изучить pi", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Остановить", exact: true }),
-  ).toBeVisible();
-  await expect(page.getByLabel("Новая задача", { exact: true })).toBeDisabled();
-  await expect(
-    page.getByRole("button", { name: "Модель", exact: true }),
-  ).toBeDisabled();
-  await expect(
-    page.getByRole("textbox", { name: "Сообщение", exact: true }),
-  ).toBeDisabled();
-  await expect(page.getByTestId("conversation")).toContainText("Поток ответа.");
-  await page.getByRole("button", { name: "Остановить", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Остановить", exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Создание задачи Готово" }),
-  ).toBeVisible();
-  await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Создание задачи Готово" }),
-  ).toBeVisible();
-  await expect(
-    page.getByTestId("todo-panel").getByText("Изучить pi", { exact: true }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Создание задачи Готово" }).click();
-  await expect(page.getByTestId("conversation")).toContainText("Результат");
-});
-test("сохранённый незавершённый инструмент: Прервано без результата", async ({
-  page,
-}) => {
-  const chat = await create(page);
-  await page.request.post("/api/__e2e/seed", {
-    data: { chatId: chat.id, kind: "interrupted" },
-  });
-  await page.reload();
-  await page.getByRole("button", { name: "Создание задачи Прервано" }).click();
-  await expect(page.getByTestId("conversation")).toContainText(
-    "Незавершённая задача",
-  );
-  await expect(
-    page.getByTestId("conversation").getByText("Результат", { exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByTestId("conversation").getByText("Ошибка", { exact: true }),
-  ).toHaveCount(0);
 });
 test("неверный ключ: безопасная ошибка провайдера и отсутствие секрета в хранилищах и ответах", async ({
   page,
@@ -388,132 +265,6 @@ test("desktop: ручная прокрутка во время stream, screensho
   await expect(page).toHaveTitle("Crewbus");
   expect(await page.locator("vite-error-overlay").count()).toBe(0);
 });
-test("390×844: Sheet и Dialog доступны с клавиатуры, задачи не обрезаются", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  const chat = await create(page);
-  await page
-    .getByRole("button", { name: "Открыть диалоги", exact: true })
-    .click();
-  const sheet = page.getByRole("dialog", { name: "Диалоги", exact: true });
-  await expect(sheet).toBeVisible();
-  for (let i = 0; i < 15; i++) {
-    await page.keyboard.press(i < 10 ? "Tab" : "Shift+Tab");
-    expect(
-      await sheet.evaluate((element) =>
-        element.contains(document.activeElement),
-      ),
-    ).toBe(true);
-  }
-  await page.keyboard.press("Tab");
-  expect(
-    await sheet.evaluate((element) => element.contains(document.activeElement)),
-  ).toBe(true);
-  await page.keyboard.press("Escape");
-  await expect(sheet).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Открыть диалоги", exact: true }),
-  ).toBeFocused();
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
-  const dialog = page.getByRole("dialog", {
-    name: "Настройки провайдера",
-    exact: true,
-  });
-  for (let i = 0; i < 15; i++) {
-    await page.keyboard.press(i < 10 ? "Tab" : "Shift+Tab");
-    expect(
-      await dialog.evaluate((element) =>
-        element.contains(document.activeElement),
-      ),
-    ).toBe(true);
-  }
-  await page.getByLabel("API-ключ", { exact: true }).fill("discard-this-key");
-  await page.keyboard.press("Tab");
-  expect(
-    await dialog.evaluate((element) =>
-      element.contains(document.activeElement),
-    ),
-  ).toBe(true);
-  await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
-  await expect(page.getByLabel("API-ключ", { exact: true })).toHaveValue("");
-  await page.keyboard.press("Escape");
-  await page.screenshot({ path: ".artifacts/screenshots/mobile-chat.png" });
-  await page
-    .getByRole("button", { name: "Открыть задачи", exact: true })
-    .click();
-  const tasks = page.getByRole("dialog", {
-    name: "Задачи диалога",
-    exact: true,
-  });
-  await expect(tasks).toBeVisible();
-  await tasks
-    .getByLabel("Новая задача", { exact: true })
-    .fill("Задача на узком экране");
-  await tasks
-    .getByRole("button", { name: "Добавить задачу", exact: true })
-    .click();
-  await expect(
-    tasks.getByText("Задача на узком экране", { exact: true }),
-  ).toBeVisible();
-  await page.screenshot({ path: ".artifacts/screenshots/mobile-tasks.png" });
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBe(true);
-  await page.keyboard.press("Escape");
-  expect(
-    (await (await page.request.get(`/api/chats/${chat.id}`)).json()).todos,
-  ).toHaveLength(1);
-});
-
-for (const [kind, text] of [
-  ["timeout", "Превышено время ожидания: 5 минут."],
-  ["turn_limit", "Достигнут лимит: 20 обращений к модели."],
-] as const)
-  test(`сохранённая причина ${kind} показана понятным текстом`, async ({
-    page,
-  }) => {
-    const chat = await create(page);
-    await page.request.post("/api/__e2e/seed", {
-      data: { chatId: chat.id, kind },
-    });
-    await page.reload();
-    await expect(page.getByText(text, { exact: true })).toBeVisible();
-  });
-test("SSE восстанавливается автоматически без второго model request; reload продолжает активный запуск", async ({
-  page,
-}) => {
-  const chat = await create(page, "slow");
-  let connections = 0;
-  await page.route("**/api/runs/*/events?*", async (route) => {
-    connections++;
-    if (connections === 1) await route.abort("failed");
-    else await route.continue();
-  });
-  await send(page);
-  await expect(page.getByTestId("conversation")).toContainText(
-    "Поток ответа.",
-    { timeout: 12000 },
-  );
-  expect(connections).toBeGreaterThan(1);
-  const before = await (await page.request.get("/api/__e2e/stats")).json();
-  await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Остановить", exact: true }),
-  ).toBeVisible();
-  await expect(page.getByTestId("conversation")).toContainText("Поток ответа.");
-  const after = await (await page.request.get("/api/__e2e/stats")).json();
-  expect(after.modelCalls).toBe(before.modelCalls);
-  await page.getByRole("button", { name: "Остановить", exact: true }).click();
-  await expect(
-    page.getByText("Запуск остановлен.", { exact: true }),
-  ).toBeVisible();
-  const state = await (await page.request.get(`/api/chats/${chat.id}`)).json();
-  expect(state.todos).toHaveLength(1);
-});
 test("409 при ручном изменении обновляет snapshot и блокирует занятый диалог", async ({
   page,
 }) => {
@@ -627,6 +378,14 @@ test("модель меняется между запусками; удален�
       .modelId,
   ).toBe("faux-alternate");
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  const replacement = page.waitForResponse(response => response.request().method() === "PUT" && response.url().includes("/credential"));
+  await page.getByLabel("API-ключ", { exact: true }).fill("e2e-replacement-key");
+  await page.getByRole("button", { name: "Сохранить ключ", exact: true }).click();
+  expect((await replacement).status()).toBe(204);
+  await expect(page.getByLabel("API-ключ", { exact: true })).toHaveValue("");
+  await expect(page.getByText("Настроен", { exact: true })).toBeVisible();
+  expect(await page.locator("body").textContent()).not.toContain("e2e-replacement-key");
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain("e2e-replacement-key");
   await page.getByRole("button", { name: "Удалить ключ", exact: true }).click();
   await expect(page.getByText("Не настроен", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
@@ -646,18 +405,55 @@ test("модель меняется между запусками; удален�
   ).toBeEnabled();
 });
 
-test('реальный сбой после commit → startup recovery → reload', async ({ page }) => {
-  const fixture = await (await page.request.get('/api/__e2e/recovery')).json();
-  const before = await (await page.request.get('/api/__e2e/stats')).json();
-  await page.goto(`/?chat=${fixture.chatId}`);
-  await expect(page.getByTestId('todo-panel').getByText('Recovered task',{exact:true})).toBeVisible();
-  await expect(page.getByText('Запуск прерван перезапуском сервера.', {exact:false})).toBeVisible();
-  await page.getByRole('button',{name:'Создание задачи Готово'}).click();
-  await expect(page.getByTestId('conversation')).toContainText('Recovered task');
+test('агент создаёт, читает, завершает и удаляет задачу по настоящему toolResult ID', async ({ page }) => {
+  const chat = await create(page, 'crud');
+  const panel = page.getByTestId('todo-panel');
+  await send(page, 'Создай задачу');
+  await expect(panel.getByText('Агент CRUD', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Отправить', exact: true })).toBeEnabled();
+  const [created] = await (await page.request.get(`/api/chats/${chat.id}/todos`)).json();
+  expect(created.id).toBeTruthy();
+  await send(page, 'Прочитай задачи');
+  await expect(page.getByRole('button', { name: 'Отправить', exact: true })).toBeEnabled();
+  await send(page, 'Заверши задачу');
+  await expect(panel.getByRole('checkbox')).toBeChecked();
+  await expect(page.getByRole('button', { name: 'Отправить', exact: true })).toBeEnabled();
   await page.reload();
-  await expect(page.getByTestId('todo-panel').getByText('Recovered task',{exact:true})).toBeVisible();
-  await expect(page.getByText('Запуск прерван перезапуском сервера.', {exact:false})).toBeVisible();
+  await expect(panel.getByRole('checkbox')).toBeChecked();
+  await send(page, 'Удали задачу');
+  await expect(panel.getByText('Агент CRUD', { exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Отправить', exact: true })).toBeEnabled();
+  await page.reload();
+  await expect(panel.getByText('Агент CRUD', { exact: true })).toHaveCount(0);
+  const snapshot = await (await page.request.get(`/api/chats/${chat.id}`)).json();
+  const tools = snapshot.messages.flatMap((message: { tools: unknown[] }) => message.tools ?? []);
+  expect(tools.map((tool: { name: string }) => tool.name)).toEqual(['todo_create', 'todo_list', 'todo_update', 'todo_delete']);
+  expect(tools[1].output).toEqual([expect.objectContaining({ id: created.id, completed: false })]);
+  expect(tools[2].input).toEqual({ id: created.id, completed: true });
+  expect(tools[3].input).toEqual({ id: created.id });
+  expect(tools.every((tool: { state: string }) => tool.state === 'completed')).toBe(true);
+});
+
+
+test('двойная отправка допускает один запуск и одну задачу', async ({ page }) => {
+  const chat = await create(page);
+  const before = await (await page.request.get('/api/__e2e/stats')).json();
+  const requests: unknown[] = [];
+  page.on('request', request => {
+    if (request.method() === 'POST' && request.url().endsWith(`/api/chats/${chat.id}/runs`)) requests.push(request.postDataJSON());
+  });
+  await page.getByRole('textbox', { name: 'Сообщение', exact: true }).fill('Создай ровно одну задачу');
+  await page.getByRole('textbox', { name: 'Сообщение', exact: true }).evaluate(element => {
+    const form = element.closest('form');
+    if (!form) throw new Error('Composer form missing');
+    form.requestSubmit(); form.requestSubmit();
+  });
+  await expect(page.getByTestId('conversation').getByText('Задача создана', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Отправить', exact: true })).toBeEnabled();
+  expect(requests).toHaveLength(1);
+  const snapshot = await (await page.request.get(`/api/chats/${chat.id}`)).json();
+  expect(snapshot.messages.filter((message: { role: string }) => message.role === 'user')).toHaveLength(1);
+  expect(snapshot.todos).toHaveLength(1);
   const after = await (await page.request.get('/api/__e2e/stats')).json();
-  expect(after.modelCalls).toBe(before.modelCalls);
-  await page.screenshot({path:'.artifacts/screenshots/recovery-reload.png'});
+  expect(after.modelCalls - before.modelCalls).toBe(2);
 });

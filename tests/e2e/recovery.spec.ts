@@ -1,0 +1,23 @@
+import { expect, test, create, send } from "./helpers";
+test('реальный сбой после commit → startup recovery → reload', async ({ page }) => {
+  const fixture = await (await page.request.get('/api/__e2e/recovery')).json();
+  const before = await (await page.request.get('/api/__e2e/stats')).json();
+  await page.goto(`/?chat=${fixture.chatId}`);
+  await expect(page.getByTestId('todo-panel').getByText('Recovered task',{exact:true})).toBeVisible();
+  await expect(page.getByText('Запуск прерван перезапуском сервера.', {exact:false})).toBeVisible();
+  await page.getByRole('button',{name:'Создание задачи Готово'}).click();
+  await expect(page.getByTestId('conversation')).toContainText(fixture.savedResult.id);
+  await page.reload();
+  await expect(page.getByTestId('todo-panel').getByText('Recovered task',{exact:true})).toBeVisible();
+  await expect(page.getByText('Запуск прерван перезапуском сервера.', {exact:false})).toBeVisible();
+  await page.getByRole('button',{name:'Создание задачи Готово'}).click();
+  await expect(page.getByTestId('conversation')).toContainText(fixture.savedResult.id);
+  const snapshot = await (await page.request.get(`/api/chats/${fixture.chatId}`)).json();
+  expect(snapshot.todos).toEqual([fixture.savedResult]);
+  const completed = snapshot.messages.flatMap((message: { tools: {state:string;output:unknown}[] }) => message.tools ?? []).filter((tool: {state:string}) => tool.state === 'completed');
+  expect(completed).toHaveLength(1);
+  expect(completed[0].output).toEqual(fixture.savedResult);
+  const after = await (await page.request.get('/api/__e2e/stats')).json();
+  expect(after.modelCalls).toBe(before.modelCalls);
+  await page.screenshot({path:'.artifacts/screenshots/recovery-reload.png'});
+});

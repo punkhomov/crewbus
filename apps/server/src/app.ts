@@ -1,4 +1,7 @@
 import Fastify from 'fastify';
+import fastifyStatic from '@fastify/static';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { recoverInterrupted } from './chats/recovery.js';
 import { registerChatRoutes } from './chats/routes.js';
 import { registerTodoRoutes } from './todos/routes.js';
@@ -76,6 +79,17 @@ export async function createApp(options: AppOptions): Promise<FastifyInstance> {
         ready: false
       });
     }
+  });
+  const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
+  if (existsSync(publicRoot)) {
+    await app.register(fastifyStatic, { root: publicRoot, wildcard: false });
+  }
+  app.setNotFoundHandler((request, reply) => {
+    const pathname = request.url.split('?')[0];
+    if (pathname === '/api' || pathname.startsWith('/api/') ||
+        !existsSync(publicRoot) || !['GET', 'HEAD'].includes(request.method))
+      return reply.code(404).send({ error: { code: 'not_found', message: 'Not found' } });
+    return reply.type('text/html').sendFile('index.html');
   });
   return app;
 }
