@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build:packages": "pnpm --filter @crewbus/contracts build && pnpm --filter @crewbus/agent build",
-    "build": "pnpm build:packages && pnpm --filter @crewbus/server build && pnpm --filter @crewbus/web build",
+    "build": "pnpm build:packages && pnpm --filter @crewbus/server build && pnpm --filter @crewbus/web build && node scripts/prepare-web.mjs",
     "typecheck": "pnpm build:packages && pnpm -r typecheck",
     "test": "pnpm build:packages && vitest run",
     "test:e2e": "playwright test",
