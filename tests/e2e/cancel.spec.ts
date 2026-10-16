@@ -68,3 +68,33 @@ for (const [kind, text] of [
     await page.reload();
     await expect(page.getByText(text, { exact: true })).toBeVisible();
   });
+
+test("частичный ответ остаётся помеченным после следующего ответа и reload", async ({page}) => {
+ const chat=await create(page,"slow");await send(page);
+ await expect(page.getByTestId("conversation")).toContainText("Поток ответа.");
+ await page.getByRole("button",{name:"Остановить",exact:true}).click();
+ const marker=page.getByRole("status").filter({hasText:"Ответ прерван"});
+ await expect(marker).toBeVisible();
+ const before=await (await page.request.get(`/api/chats/${chat.id}`)).json();
+ const partial=before.messages.find((m:{state:string; text:string})=>m.state==="interrupted"&&m.text.includes("Поток ответа."));
+ expect(partial).toBeTruthy();
+ await page.request.post("/api/__e2e/scenario",{data:{scenario:"todo"}});
+ await send(page,"Продолжим");await expect(page.getByText("Задача создана",{exact:true})).toBeVisible();
+ await page.reload();await expect(marker).toHaveCount(1);await expect(marker).toBeVisible();
+ const after=await (await page.request.get(`/api/chats/${chat.id}`)).json();
+ expect(after.messages.find((m:{id:string})=>m.id===partial.id)).toEqual(partial);
+ await expect(page.getByTestId("conversation")).toContainText(partial.text);
+ await expect(page.getByRole("button",{name:"Создание задачи Готово"})).toHaveCount(2);
+ await page.screenshot({path:"/tmp/crewbus-final-interrupted.png"});
+});
+
+test("переполнение контекста предлагает новый диалог после reload без утечки ключа",async({page})=>{
+ const chat=await create(page,"overflow");await send(page);
+ const guidance="Контекст диалога переполнен. Создайте новый диалог.";
+ await expect(page.getByRole("status").filter({hasText:guidance})).toBeVisible();
+ await page.reload();await expect(page.getByRole("status").filter({hasText:guidance})).toBeVisible();
+ const snapshot=await (await page.request.get(`/api/chats/${chat.id}`)).json();
+ expect(snapshot.run.reason).toBe("context_overflow");expect(JSON.stringify(snapshot)).not.toContain("e2e-test-key");
+ expect(await page.locator("body").innerText()).not.toContain("e2e-test-key");
+ await page.screenshot({path:"/tmp/crewbus-final-overflow.png"});
+});

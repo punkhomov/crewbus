@@ -19,13 +19,13 @@ const faux = fauxProvider({
 });
 const models = createModels();
 models.setProvider({ ...faux.provider, name: "Faux" });
-type Scenario = "todo" | "slow" | "error" | "unsafe" | "crud";
+type Scenario = "todo" | "slow" | "error" | "overflow" | "unsafe" | "crud";
 function responses(scenario: Scenario) {
   const respond = (context: TranscriptContext): AssistantMessage => {
-    if (scenario === "error")
+    if (scenario === "error" || scenario === "overflow")
       return fauxAssistantMessage("", {
         stopReason: "error",
-        errorMessage: "e2e-test-key rejected by scripted provider",
+        errorMessage: scenario === "overflow" ? "prompt is too long: e2e-test-key" : "e2e-test-key rejected by scripted provider",
       });
     if (scenario === "unsafe")
       return fauxAssistantMessage(

@@ -38,3 +38,24 @@ test('mutations remain busy until manager settlement even after terminal persist
  expect((await app.inject({method:'PATCH',url:`/api/chats/${chat.id}`,payload:selection})).statusCode).toBe(200);
  }finally{release();await app.close();}
 });
+
+test('HTTP shutdown closes admission before pending authentication and keeps SQLite open until it settles',async()=>{
+ const {createModels,fauxProvider}=await import('@earendil-works/pi-ai');
+ const faux=fauxProvider(),models=createModels();models.setProvider(faux.provider);
+ const model=faux.getModel(),auth=await models.getAuth(model);
+ let enter!:()=>void,release!:()=>void;
+ const entered=new Promise<void>(resolve=>{enter=resolve;});const gate=new Promise<void>(resolve=>{release=resolve;});
+ models.getAuth=async()=>{enter();await gate;return auth;};
+ const app=await createApp({dataDir:':memory:',models});
+ const chat=app.storage.chats.create({providerId:model.provider,modelId:model.id});
+ const address=await app.listen({host:'127.0.0.1',port:0});
+ const request=fetch(`${address}/api/chats/${chat.id}/runs`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:'hello',clientRequestId:'pending'})});
+ await entered;let settled=false;
+ const closing=app.close().then(()=>{settled=true;});
+ try{
+  await new Promise(resolve=>setTimeout(resolve,20));expect(settled).toBe(false);expect(app.storage.database.isOpen).toBe(true);
+  release();const response=await request;expect(response.status).toBe(409);
+  expect(await response.json()).toMatchObject({error:{code:'conflict'}});
+  await closing;expect(app.storage.database.isOpen).toBe(false);expect(faux.state.callCount).toBe(0);
+ }finally{release();await request;await closing;}
+});

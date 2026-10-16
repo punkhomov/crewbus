@@ -330,3 +330,40 @@ test('completed run is immutable and unavailable auth cannot accept a new run', 
     expect(f.storage.runs.messages(c.id).filter(m => m.role === 'user')).toHaveLength(1);
   } finally { await f.close(); }
 });
+
+test('shutdown waits for pending auth, rejects admission, and accepts no model or user work',async()=>{
+ const f=fixture([fauxAssistantMessage('unused')]),entered=gate(),release=gate();
+ try{
+  const c=f.chat();f.models.getAuth=async()=>{entered.release();await release.promise;return {apiKey:'test'} as Awaited<ReturnType<typeof f.models.getAuth>>;};
+  const admission=f.manager.start(c.id,input());const rejected=expect(admission).rejects.toMatchObject({statusCode:409});await entered.promise;
+  let closed=false;const closing=f.manager.close().then(()=>{closed=true;});
+  await Promise.resolve();expect(closed).toBe(false);expect(f.storage.database.isOpen).toBe(true);
+  release.release();await rejected;await closing;
+  expect(f.storage.runs.list(c.id)).toEqual([]);expect(f.storage.runs.messages(c.id)).toEqual([]);expect(f.faux.state.callCount).toBe(0);
+ }finally{release.release();await f.close();}
+});
+
+test('context overflow is classified before diagnostics are sanitized without retries or secret leakage',async()=>{
+ const f=fixture([fauxAssistantMessage('',{stopReason:'error',errorMessage:'maximum context length exceeded api-key=super-secret'})]);
+ try{
+  const c=f.chat(),r=await f.manager.start(c.id,input());await f.manager.wait(r.runId);
+  expect(f.storage.runs.get(r.runId)).toMatchObject({status:'failed',reason:'context_overflow'});
+  expect(JSON.stringify(f.storage.runs.messages(c.id))).not.toContain('super-secret');
+  expect(JSON.stringify(f.storage.events.since(r.runId,0))).not.toContain('super-secret');
+  expect(f.manager.snapshot(c.id).run?.reason).toBe('context_overflow');expect(f.faux.state.callCount).toBe(1);
+ }finally{await f.close();}
+});
+
+test('pending admission auth does not delay aborting an already active run',async()=>{
+ const provider=gate(),entered=gate(),auth=gate(),authEntered=gate();
+ const f=fixture([async()=>{entered.release();await provider.promise;return toolTurn('late','todo_create',{title:'must not run'});}]);
+ try{
+  const a=f.chat(),b=f.chat(),run=await f.manager.start(a.id,input());await entered.promise;
+  f.models.getAuth=async()=>{authEntered.release();await auth.promise;return undefined;};
+  const admission=f.manager.start(b.id,input());const rejected=expect(admission).rejects.toMatchObject({code:'provider_unavailable'});await authEntered.promise;
+  const closing=f.manager.close();provider.release();await f.manager.wait(run.runId);
+  expect(f.storage.runs.get(run.runId)).toMatchObject({status:'aborted',reason:'user_abort'});
+  expect(f.storage.todos.list(a.id)).toEqual([]);
+  auth.release();await rejected;await closing;
+ }finally{provider.release();auth.release();await f.close();}
+});

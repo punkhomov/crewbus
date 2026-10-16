@@ -50,16 +50,38 @@ export function streamEvents(raw:ServerResponse,after:number,subscribe:(listener
  ready=true;
  heartbeat=setInterval(()=>{if(!closed&&!writing){writing=true;void write(': heartbeat\n\n').catch(()=>{cleanup();raw.destroy();}).finally(()=>{writing=false;void pump();});}},15_000);
  void pump();
- return cleanup;
+ return () => {
+  cleanup();
+  raw.destroy();
+ };
 }
-export function registerSseRoutes(app:FastifyInstance):void {
+export function registerSseRoutes(app:FastifyInstance):()=>void {
+ const streams = new Map<ServerResponse, () => void>();
  app.get<{Params:{id:string};Querystring:{after?:string}}>('/api/runs/:id/events',{
   schema:{querystring:{type:'object',additionalProperties:false,properties:{after:{type:'string'}}}}
  },async(req,reply)=>{
   const id=req.params.id;app.storage.runs.get(id);
   const header=req.headers['last-event-id'];
   const after=parseCursor(Array.isArray(header)?header[0]:header,req.query.after,app.storage.events.cursor(id));
-  reply.hijack();reply.raw.writeHead(200,{'Content-Type':'text/event-stream; charset=utf-8','Cache-Control':'no-cache, no-transform','Connection':'keep-alive','X-Accel-Buffering':'no'});reply.raw.flushHeaders();
-  streamEvents(reply.raw,after,listener=>app.runs.broker.subscribe(id,listener),()=>app.storage.events.since(id,after),()=>app.storage.runs.get(id).status!=='running');
+  reply.hijack();
+  reply.raw.writeHead(200, {
+   'Content-Type': 'text/event-stream; charset=utf-8',
+   'Cache-Control': 'no-cache, no-transform',
+   'Connection': 'keep-alive',
+   'X-Accel-Buffering': 'no'
+  });
+  reply.raw.flushHeaders();
+  const stop = streamEvents(
+   reply.raw, after,
+   listener => app.runs.broker.subscribe(id, listener),
+   () => app.storage.events.since(id, after),
+   () => app.storage.runs.get(id).status !== 'running'
+  );
+  streams.set(reply.raw, stop);
+  reply.raw.once('close', () => streams.delete(reply.raw));
  });
+ return () => {
+  for (const stop of streams.values()) stop();
+  streams.clear();
+ };
 }

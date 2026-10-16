@@ -28,6 +28,8 @@ These decisions preserve the approved implementation context before ignored task
 
 12. Ruling: Task8 may seed interrupted-tool state only in isolated test harness to verify renderer, alongside real streaming abort after committed tool — TodoPort synchronous operations make pausing mid-tool in browser artificial; seeded state tests presentation, real abort tests retention — cost if wrong: add delayed injectable tool seam/browser scenario. Production remains no faux/debug routes.
 
+13. Ruling: add `context_overflow` to `RunSummary.reason` — the approved spec requires actionable new-dialogue guidance although the plan's illustrative reason enum omitted it; classify with pinned pi `isContextOverflow` before diagnostics are sanitized, retain only a controlled code and UI text, and use the existing SQLite text reason without a migration — cost if wrong: additive contract/UI adjustment. No raw provider errors, automatic retries, or compression.
+
 ## Remaining limits and verification boundaries
 
 - Live provider compatibility is untested: no real key was supplied. Automated tests use pi fauxProvider; no real external provider call is claimed.
@@ -36,8 +38,8 @@ These decisions preserve the approved implementation context before ignored task
 - Chromium desktop and 390×844 mobile are exercised. Other browsers, Windows runtime and unpinned platforms are not verified. Browser harness deliberately uses one isolated worker and fixed ports.
 - Markdown/Shiki/Mermaid generate large bundles (main JS about 1.6 MB / gzip 500 kB). The build warning remains visible; no arbitrary warning-limit suppression or blanket refactor was applied.
 - Some repository validation/scope/conflict assertions are generic toThrow; stronger exact-code checks remain a testing improvement, not an observed runtime fault. They were not changed by packaging.
-- A deterministic pending-auth admission-versus-close regression and additional subscribe/replay/listener-cleanup seam tests remain useful follow-ups. Existing manager/SSE/integration coverage passes; packaging does not rewrite those lifecycle modules.
-- HTTP/SSE schema and lifecycle code is compressed in places. A focused readability cleanup can be reviewed separately without broad changes in packaging.
+- Final review fixes move admission closure and active-run abort/settlement into Fastify preClose, before HTTP drainage; remaining SSE writers are explicitly destroyed and SQLite closes afterward. Real HTTP connected/stalled SSE, failed terminal persistence, pending-auth admission, active abort during pending auth, and listener cleanup are covered. Further subscribe/replay seam expansion remains a follow-up.
+- HTTP/SSE schema code is still compressed in places. The changed shutdown lifecycle was expanded; broader readability cleanup remains deferred.
 - Task4 coverage was expanded after implementation; its report distinguishes timing rather than claiming every added assertion was initial TDD.
 - Registry source licenses and hashes remain versioned; test screenshots/logs and task reports are ignored scratch artifacts. CI is defined locally; hosted GitHub Actions execution is not claimed.
 

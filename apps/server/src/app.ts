@@ -46,9 +46,16 @@ export async function createApp(options: AppOptions): Promise<FastifyInstance> {
   registerProviderRoutes(app, catalog);
   registerChatRoutes(app);
   registerTodoRoutes(app);
-  registerSseRoutes(app);
+  const closeStreams = registerSseRoutes(app);
+  app.addHook('preClose', async () => {
+    // Fastify waits for HTTP drainage before onClose, including open SSE.
+    try {
+      await runs.close();
+    } finally {
+      closeStreams();
+    }
+  });
   app.addHook('onClose', async () => {
-    await runs.close();
     if (storage.database.isOpen)
       storage.close();
   });

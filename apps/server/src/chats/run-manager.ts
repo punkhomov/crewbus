@@ -75,7 +75,7 @@ export function createRunManager(options: RunManagerOptions): RunManager {
       const messages = readOrSave(slot, () => storage.loadContext(slot.chatId,slot.runId));
       const previous = readOrSave(slot, () => storage.runs.list(slot.chatId).at(-2));
       const events = createAgentEvents({storage,broker,chatId:slot.chatId,runId:slot.runId,userMessageId:slot.userMessageId,
-        onProviderError: () => { slot.reason ??= 'provider_error'; }, onEnd: () => finish(slot)});
+        onProviderError: reason => { slot.reason ??= reason; }, onEnd: () => finish(slot)});
       slot.agent = createCrewAgent({models,model:slot.model,messages,runId:slot.runId,chatId:slot.chatId,
         todos:options.todoPort ?? storage.todos, requireTodoRefresh:previous?.status === 'interrupted',
         onTurnLimit: () => { slot.reason ??= 'turn_limit'; },
@@ -161,9 +161,9 @@ export function createRunManager(options: RunManagerOptions): RunManager {
     isProviderBusy: providerId => [...active.values()].some(slot => slot.providerId === providerId) || storage.runs.unfinished().some(run => storage.runs.details(run.id).providerId === providerId),
     async close() {
       closed = true;
-      await Promise.allSettled([...starting]);
       const slots = [...active.values()];
       for (const slot of slots) abort(slot,'user_abort');
+      await Promise.allSettled([...starting]);
       await Promise.all(slots.map(slot => slot.promise));
     }
   };

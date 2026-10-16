@@ -17,12 +17,14 @@ import {
   PromptInputSubmit,
   PromptInputFooter,
 } from "@/components/ai-elements/prompt-input";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ToolCard } from "./tool-card.js";
 const reasons = {
   turn_limit: "Достигнут лимит: 20 обращений к модели.",
   timeout: "Превышено время ожидания: 5 минут.",
   user_abort: "Запуск остановлен.",
+  context_overflow: "Контекст диалога переполнен. Создайте новый диалог.",
   provider_error: "Провайдер не выполнил запрос. Проверьте API-ключ и модель.",
   storage_error: "Не удалось сохранить результат.",
   process_restart: "Запуск прерван перезапуском сервера.",
@@ -64,6 +66,9 @@ export function ChatConversation({
                     <p className="whitespace-pre-wrap break-words">
                       {message.text}
                     </p>
+                  )}
+                  {message.role === "assistant" && message.state === "interrupted" && (
+                    <Badge variant="outline" role="status">Ответ прерван</Badge>
                   )}
                 </MessageContent>
                 {message.tools.map((tool) => (

@@ -1,3 +1,4 @@
+import { isContextOverflow } from '@earendil-works/pi-ai';
 import type { CrewAgentOptions } from '@crewbus/agent';
 import type { CrewEvent, EventData, JsonValue, MessageView, ToolView } from '@crewbus/contracts';
 import type { Storage } from '../storage/index.js';
@@ -20,7 +21,7 @@ export function persistAndPublish(storage: Storage, broker: EventBroker, runId: 
 /** Identity derives from run-local event order, never provider message IDs. */
 export function createAgentEvents(options: {
   storage: Storage; broker: EventBroker; chatId: string; runId: string; userMessageId: string;
-  onProviderError(): void; onEnd(): void;
+  onProviderError(reason: 'provider_error' | 'context_overflow'): void; onEnd(): void;
 }): (event: AgentEvent) => Promise<void> {
   const {storage, broker, chatId, runId, userMessageId} = options;
   let userStarted = false, assistantIndex = 0, resultIndex = 0;
@@ -48,7 +49,7 @@ export function createAgentEvents(options: {
       case 'message_end': {
         const message = event.message;
         if (message.role === 'assistant' && assistant) {
-          if (message.stopReason === 'error') options.onProviderError();
+          if (message.stopReason === 'error') options.onProviderError(isContextOverflow(message) ? 'context_overflow' : 'provider_error');
           assistant.text = text(message);
           assistant.state = message.stopReason === 'aborted' || message.stopReason === 'error' ? 'interrupted' : 'completed';
           for (const block of message.content) {

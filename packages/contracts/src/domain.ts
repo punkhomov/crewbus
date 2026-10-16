@@ -24,7 +24,7 @@ export interface RunSummary {
   id: string;
   chatId: string;
   status: 'running' | 'completed' | 'failed' | 'aborted' | 'interrupted';
-  reason: null | 'turn_limit' | 'timeout' | 'user_abort' | 'provider_error' | 'storage_error' | 'process_restart';
+  reason: null | 'turn_limit' | 'timeout' | 'user_abort' | 'provider_error' | 'context_overflow' | 'storage_error' | 'process_restart';
   error: string | null;
   startedAt: number;
   endedAt: number | null;
