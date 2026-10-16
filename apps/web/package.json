@@ -1,0 +1,39 @@
+{
+  "name": "@crewbus/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "ai": "7.0.118",
+    "zod": "4.6.5",
+    "streamdown": "2.6.0",
+    "lucide-react": "1.48.0",
+    "use-stick-to-bottom": "1.1.6",
+    "nanoid": "6.0.1",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.7.0",
+    "class-variance-authority": "0.7.1",
+    "@streamdown/cjk": "1.0.3",
+    "@streamdown/code": "1.1.1",
+    "@streamdown/math": "1.0.2",
+    "@streamdown/mermaid": "1.0.2",
+    "shiki": "4.4.3",
+    "radix-ui": "1.6.7",
+    "cmdk": "1.1.1",
+    "@crewbus/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "8.3.1",
+    "@vitejs/plugin-react": "6.1.1",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  }
+}

@@ -1,0 +1,173 @@
+@import "tailwindcss";
+:root {
+  --background: #f7f8fa;
+  --foreground: #17202b;
+  --card: #ffffff;
+  --card-foreground: #17202b;
+  --popover: #ffffff;
+  --popover-foreground: #17202b;
+  --primary: #3159d7;
+  --primary-foreground: #ffffff;
+  --secondary: #e9edf5;
+  --secondary-foreground: #17202b;
+  --muted: #e9edf5;
+  --muted-foreground: #637083;
+  --accent: #e9edf5;
+  --accent-foreground: #17202b;
+  --destructive: #c83245;
+  --border: #dbe0e9;
+  --input: #dbe0e9;
+  --ring: #3159d7;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #17202b;
+  --sidebar-primary: #3159d7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9edf5;
+  --sidebar-accent-foreground: #17202b;
+  --sidebar-border: #dbe0e9;
+  --sidebar-ring: #3159d7;
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-lg: var(--radius);
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: system-ui, sans-serif;
+    margin: 0;
+  }
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr) 320px;
+  height: 100dvh;
+  overflow: hidden;
+}
+.chat-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--background);
+}
+.desktop-navigation,
+.desktop-todos {
+  min-height: 0;
+  overflow: hidden;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 10px;
+}
+.brand-mark svg {
+  width: 19px;
+  height: 19px;
+}
+.mobile-toggle {
+  display: none;
+}
+[data-testid="conversation"] {
+  overflow-wrap: anywhere;
+}
+[data-testid="conversation"] pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+button,
+input,
+textarea {
+  transition: box-shadow 0.15s;
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .desktop-todos {
+    display: none;
+  }
+  .mobile-toggle {
+    display: inline-flex;
+  }
+  .desktop-navigation
+    ~ .chat-column
+    header
+    > .flex:first-child
+    > .mobile-toggle {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .desktop-navigation,
+  .desktop-model {
+    display: none;
+  }
+  .desktop-navigation
+    ~ .chat-column
+    header
+    > .flex:first-child
+    > .mobile-toggle {
+    display: inline-flex;
+  }
+  .composer [data-slot="input-group"] {
+    min-width: 0;
+  }
+  .composer [data-slot="input-group-addon"] span {
+    max-width: 230px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.tasks-sheet [data-testid="todo-panel"] > div:first-child {
+  padding-right: 2rem;
+}

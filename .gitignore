@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.crewbus/
+playwright-report/
+test-results/
+.superpowers/
+
+.artifacts/
+
+apps/server/public/
