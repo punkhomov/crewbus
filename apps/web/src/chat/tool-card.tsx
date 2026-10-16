@@ -9,6 +9,7 @@ import {
 import { CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 const titles: Record<string, string> = {
+  web_search: "Поиск в интернете",
   todo_create: "Создание задачи",
   todo_list: "Список задач",
   todo_update: "Обновление задачи",

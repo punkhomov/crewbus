@@ -79,7 +79,7 @@ export function createAgentEvents(options: {
         entry.tool = {...entry.tool,state:event.isError ? 'failed' : 'completed',output:event.isError ? null : json(event.result?.details),error:event.isError ? 'Tool execution failed' : null};
         entry.message.tools = entry.message.tools.map(tool => tool.id === entry.tool.id ? entry.tool : tool);
         emit({type:'tool.completed',messageId:entry.message.id,tool:entry.tool});
-        if (!event.isError && event.toolName !== 'todo_list') emit({type:'todos.changed',todos:storage.todos.list(chatId)});
+        if (!event.isError && ['todo_create', 'todo_update', 'todo_delete'].includes(event.toolName)) emit({type:'todos.changed',todos:storage.todos.list(chatId)});
         break;
       }
       case 'agent_end': options.onEnd(); break;

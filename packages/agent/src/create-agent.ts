@@ -3,6 +3,7 @@ import type { Api, Model, Models } from '@earendil-works/pi-ai';
 import { SYSTEM_PROMPT } from './system-prompt.js';
 import type { TodoPort } from './todo-port.js';
 import { createTodoTools } from './tools/todos.js';
+import { createWebSearchTool } from './tools/web-search.js';
 
 export interface CrewAgentOptions {
   models: Models;
@@ -21,7 +22,7 @@ export function createCrewAgent(options: CrewAgentOptions): Agent {
   const agent = new Agent({
     initialState: {
       model: options.model, messages: options.messages,
-      systemPrompt: SYSTEM_PROMPT, tools: createTodoTools(options),
+      systemPrompt: SYSTEM_PROMPT, tools: [...createTodoTools(options), createWebSearchTool()],
     },
     streamFn: options.models.streamSimple.bind(options.models),
     toolExecution: 'sequential',

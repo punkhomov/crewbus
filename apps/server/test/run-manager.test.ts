@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { createModels, fauxProvider, fauxAssistantMessage, fauxText } from '@earendil-works/pi-ai';
 import { createStorage } from '../src/storage/index.js';
 import { createCatalog } from '../src/providers/catalog.js';
@@ -366,4 +366,51 @@ test('pending admission auth does not delay aborting an already active run',asyn
   expect(f.storage.todos.list(a.id)).toEqual([]);
   auth.release();await rejected;await closing;
  }finally{provider.release();auth.release();await f.close();}
+});
+
+
+afterEach(() => vi.unstubAllGlobals());
+test.each(['exa', 'parallel'])('persists %s search results across reloads without todo changes', async provider => {
+  vi.stubGlobal('fetch', async () => Response.json({ jsonrpc: '2.0', id: 1,
+    result: { content: [{ type: 'text', text: 'Title: Node.js\nURL: https://nodejs.org/' }] } }));
+  const f = fixture([toolTurn('search', 'web_search', { query: 'Node.js', provider }), fauxAssistantMessage('Found Node.js'),
+    context => {
+      expect(context.messages.find(m => m.role === 'toolResult' && m.toolName === 'web_search')).toMatchObject({
+        isError: false, details: { provider, query: 'Node.js' },
+      });
+      return fauxAssistantMessage('Remembered source');
+    }]);
+  try {
+    const c = f.chat(), r = await f.manager.start(c.id, input('Search'));
+    await f.manager.wait(r.runId);
+    const view = f.manager.snapshot(c.id);
+    expect(view.run?.status).toBe('completed');
+    expect(view.messages.flatMap(m => m.tools)).toMatchObject([{ name: 'web_search', state: 'completed',
+      output: { provider, query: 'Node.js', text: 'Title: Node.js\nURL: https://nodejs.org/' } }]);
+    expect(f.storage.events.since(r.runId, 0).filter(event => event.data.type === 'todos.changed')).toEqual([]);
+    const next = await f.manager.start(c.id, input('Remember'));
+    await f.manager.wait(next.runId);
+    expect(f.faux.state.callCount).toBe(3);
+    expect(f.storage.todos.list(c.id)).toEqual([]);
+  } finally { await f.close(); }
+});
+
+test('aborting a pending search cancels its HTTP request and settles the run', async () => {
+  const entered = gate();
+  let cancelled = false;
+  vi.stubGlobal('fetch', (_url: string, init: RequestInit) => new Promise((_resolve, reject) => {
+    init.signal!.addEventListener('abort', () => { cancelled = true; reject(init.signal!.reason); }, { once: true });
+    entered.release();
+  }));
+  const f = fixture([toolTurn('search', 'web_search', { query: 'Node.js' }), fauxAssistantMessage('unused')]);
+  try {
+    const c = f.chat(), r = await f.manager.start(c.id, input('Search'));
+    await entered.promise;
+    f.manager.abort(r.runId);
+    await f.manager.wait(r.runId);
+    expect(cancelled).toBe(true);
+    expect(f.storage.runs.get(r.runId)).toMatchObject({ status: 'aborted', reason: 'user_abort' });
+    expect(f.faux.state.callCount).toBe(1);
+    expect(f.storage.todos.list(c.id)).toEqual([]);
+  } finally { await f.close(); }
 });

@@ -19,8 +19,21 @@ const faux = fauxProvider({
 });
 const models = createModels();
 models.setProvider({ ...faux.provider, name: "Faux" });
-type Scenario = "todo" | "slow" | "error" | "overflow" | "unsafe" | "crud";
+type Scenario = "search-exa" | "search-parallel" | "search-error" | "todo" | "slow" | "error" | "overflow" | "unsafe" | "crud";
+let searchFails = false;
+const realFetch = globalThis.fetch;
+// Hosted MCP responses stay local and deterministic in this test-only entrypoint.
+globalThis.fetch = async (input, init) => {
+  if (['https://mcp.exa.ai/mcp', 'https://search.parallel.ai/mcp'].includes(String(input))) {
+    if (searchFails) return new Response('Access denied', { status: 403 });
+    return Response.json({ jsonrpc: '2.0', id: 1, result: { content: [{ type: 'text',
+      text: 'Title: Node.js\nURL: https://nodejs.org/\nText: Official documentation',
+    }] } });
+  }
+  return realFetch(input, init);
+};
 function responses(scenario: Scenario) {
+  searchFails = scenario === 'search-error';
   const respond = (context: TranscriptContext): AssistantMessage => {
     if (scenario === "error" || scenario === "overflow")
       return fauxAssistantMessage("", {
@@ -32,6 +45,12 @@ function responses(scenario: Scenario) {
         '<img src=x onerror="window.__injected=true"><script>window.__injected=true</script>\n\n[опасная ссылка](javascript:window.__injected=true)',
       );
     const last = context.messages.at(-1);
+    if (scenario.startsWith('search-')) {
+      if (last?.role === 'toolResult') return fauxAssistantMessage(last.isError ? 'Поиск недоступен' : '[Node.js](https://nodejs.org/) — результат поиска.');
+      return fauxAssistantMessage([fauxToolCall('web_search', {
+        query: 'Node.js documentation', provider: scenario === 'search-parallel' ? 'parallel' : 'exa',
+      }, { id: crypto.randomUUID() })], { stopReason: 'toolUse' });
+    }
     if (scenario === "crud") {
       if (last?.role === "toolResult") return fauxAssistantMessage("Операция завершена");
       const prompt = context.messages.filter(message => message.role === "user").at(-1);
