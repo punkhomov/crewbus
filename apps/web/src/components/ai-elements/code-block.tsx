@@ -60,7 +60,6 @@ const addKeysToTokens = (lines: ThemedToken[][]): KeyedLine[] =>
 // Token rendering component
 const TokenSpan = ({ token }: { token: ThemedToken }) => (
   <span
-    className="dark:!bg-[var(--shiki-dark-bg)] dark:!text-[var(--shiki-dark)]"
     style={
       {
         backgroundColor: token.bgColor,
@@ -210,6 +209,8 @@ export const highlightCode = (
 
       const result = highlighter.codeToTokens(code, {
         lang: langToUse,
+        defaultColor: "light-dark()",
+        colorsRendering: "none",
         themes: {
           dark: "github-dark",
           light: "github-light",
@@ -217,8 +218,9 @@ export const highlightCode = (
       });
 
       const tokenized: TokenizedCode = {
-        bg: result.bg ?? "transparent",
-        fg: result.fg ?? "inherit",
+        // Shiki appends CSS declarations; React color properties accept only a color.
+        bg: result.bg?.split(";")[0] ?? "transparent",
+        fg: result.fg?.split(";")[0] ?? "inherit",
         tokens: result.tokens,
       };
 
@@ -269,7 +271,7 @@ const CodeBlockBody = memo(
     return (
       <pre
         className={cn(
-          "dark:!bg-[var(--shiki-dark-bg)] dark:!text-[var(--shiki-dark)] m-0 p-4 text-sm",
+          "m-0 p-4 text-sm",
           className
         )}
         style={preStyle}
