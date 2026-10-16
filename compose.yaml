@@ -5,7 +5,7 @@ services:
       args:
         NODE_IMAGE: ${NODE_IMAGE:?Set NODE_IMAGE from .docker/node-image.txt}
     ports:
-      - "127.0.0.1:3000:3000"
+      - "0.0.0.0:3000:3000"
     volumes:
       - crewbus-data:/data
     init: true
