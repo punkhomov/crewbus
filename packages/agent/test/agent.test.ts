@@ -1,5 +1,5 @@
-import { expect, test } from 'vitest';
-import { createModels, fauxProvider, fauxAssistantMessage, fauxToolCall } from '@earendil-works/pi-ai';
+import { afterEach, expect, test, vi } from 'vitest';
+import { createModels, fauxProvider, fauxAssistantMessage, fauxToolCall, getCurrentTools } from '@earendil-works/pi-ai';
 import { createCrewAgent } from '../src/create-agent.js';
 
 test('executes todo_create and exposes its actual result in the canonical transcript', async () => {
@@ -16,7 +16,7 @@ test('executes todo_create and exposes its actual result in the canonical transc
     todos: { apply: (_context, name) => { calls.push(name); return { id: 't', title: 'Изучить pi' }; } },
     requireTodoRefresh: false, onEvent: async () => {}, onTurnLimit: () => {},
   });
-  expect(agent.state.tools.map(t => t.name)).toEqual(['todo_create', 'todo_list', 'todo_update', 'todo_delete']);
+  expect(agent.state.tools.map(t => t.name)).toEqual(['todo_create', 'todo_list', 'todo_update', 'todo_delete', 'web_search']);
   expect(agent.state.messages[0]?.role).toBe('system');
   await agent.prompt('Создай задачу');
   expect(calls).toEqual(['todo_create']);
@@ -123,7 +123,7 @@ test('preserves an actual canonical leading system and tool declarations once ac
   const first = setup([fauxAssistantMessage('first')], { apply: () => null });
   const canonical = structuredClone(first.agent.state.messages[0]);
   expect(canonical).toMatchObject({ role: 'system', toolsAdded: [
-    { name: 'todo_create' }, { name: 'todo_list' }, { name: 'todo_update' }, { name: 'todo_delete' },
+    { name: 'todo_create' }, { name: 'todo_list' }, { name: 'todo_update' }, { name: 'todo_delete' }, { name: 'web_search' },
   ] });
   await first.agent.prompt('hello');
   const history = structuredClone(first.agent.state.messages);
@@ -192,4 +192,24 @@ test('direct executors throw service errors and forward the supplied signal', as
       expect(signal).toBe(controller.signal); throw new Error('Todo not found');
     } } });
   await expect(tools[3].execute('delete', { id: 'missing' }, controller.signal)).rejects.toThrow('Todo not found');
+});
+
+
+afterEach(() => vi.unstubAllGlobals());
+test('restored todo-only chats can search without entering the todo mutation port', async () => {
+  vi.stubGlobal('fetch', async () => Response.json({ jsonrpc: '2.0', id: 1,
+    result: { content: [{ type: 'text', text: 'Source: https://nodejs.org/' }] } }));
+  const old = setup([], { apply: () => null }).agent.state.messages[0];
+  if (old?.role !== 'system') throw new Error('Missing system');
+  const legacy = { ...old, content: 'Original todo-only prompt', toolsAdded: old.toolsAdded?.filter(t => t.name !== 'web_search') };
+  const { agent } = setup([context => {
+    expect(getCurrentTools(context.messages).some(tool => tool.name === 'web_search')).toBe(true);
+    expect(context.messages[0]).toEqual(legacy);
+    return toolTurn('web_search', { query: 'Node.js', provider: 'parallel' }, 'search');
+  }, fauxAssistantMessage('Source: https://nodejs.org/')], {
+    apply: () => { throw new Error('Search must not enter TodoPort'); },
+  }, { messages: [legacy], requireTodoRefresh: true });
+  await agent.prompt('Search');
+  expect(toolResults(agent.state.messages)[0]).toMatchObject({ isError: false, toolName: 'web_search',
+    details: { provider: 'parallel', query: 'Node.js', text: 'Source: https://nodejs.org/' } });
 });
