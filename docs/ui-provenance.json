@@ -75,7 +75,7 @@
       "working": "apps/web/src/components/ai-elements/code-block.tsx",
       "url": "https://raw.githubusercontent.com/vercel/ai-elements/6a9d5b1822ffb10bba4bd97175f01edd7d8651cd/packages/elements/src/code-block.tsx",
       "sha256": "5c7285171c5aa741749a1642a85f492a9b5e80dc4ccb704b5c3f58c45efebd04",
-      "workingSha256": "35093bed191f948414817e3f07f224eb24c402895f46be6e06f205afb09bf93a",
+      "workingSha256": "b6c421fb2214d121ce1570f390eba95dfa66873ed0e809b0c2a420459a3e8e24",
       "license": "vendor/ui/ai-elements/LICENSE"
     },
     {

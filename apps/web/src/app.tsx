@@ -22,10 +22,23 @@ import {
   ListTodoIcon,
   SettingsIcon,
   ArrowRightIcon,
+  SunIcon,
+  MoonIcon,
 } from "lucide-react";
 const selectedId = () =>
   new URL(window.location.href).searchParams.get("chat") ?? "";
 export function App() {
+  const [dark, setDark] = useState(() =>
+    document.documentElement.classList.contains("dark"),
+  );
+  const toggleTheme = () => {
+    const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
+    setDark(next);
+    try {
+      localStorage.setItem("crewbus-theme", next ? "dark" : "light");
+    } catch { /* Keep switching when storage is blocked. */ }
+  };
   const sidebarTrigger = useRef<HTMLButtonElement>(null),
     tasksTrigger = useRef<HTMLButtonElement>(null),
     dialogTrigger = useRef<HTMLElement | null>(null);
@@ -186,6 +199,15 @@ export function App() {
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={dark ? "Включить светлую тему" : "Включить тёмную тему"}
+              title={dark ? "Включить светлую тему" : "Включить тёмную тему"}
+              onClick={toggleTheme}
+            >
+              {dark ? <SunIcon /> : <MoonIcon />}
+            </Button>
             {snapshot && (
               <>
                 <div className="desktop-model">
